@@ -1,10 +1,11 @@
 import { Route, Routes } from 'react-router-dom';
-import { RequiresAuth } from './components';
+import { Navbar, RequiresAuth } from './components';
 import { Posts, Login } from './app/features/';
 
 export const App = () => {
   return (
     <div className='App'>
+      <Navbar />
       <Routes>
         {/* Public Routes */}
         <Route path='/login' element={<Login />} />

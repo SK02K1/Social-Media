@@ -28,7 +28,12 @@ export const LoginForm = () => {
     return (
       <VStack key={id} alignItems='flex-start' spacing={1}>
         <FormLabel>{label}</FormLabel>
-        <Input type={type} name={name} placeholder={`Enter your ${name}`} />
+        <Input
+          type={type}
+          name={name}
+          id={name}
+          placeholder={`Enter your ${name}`}
+        />
       </VStack>
     );
   });
