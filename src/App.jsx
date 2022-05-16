@@ -6,7 +6,7 @@ import { Posts, Login, Signup } from './app/features/';
 export const App = () => {
   const appBg = useColorModeValue('#F7FAFC', '#1A202C');
   return (
-    <Box bg={appBg} className='App'>
+    <Box minH='100vh' bg={appBg} className='App'>
       <Navbar />
       <Routes>
         {/* Public Routes */}
