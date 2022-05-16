@@ -81,6 +81,9 @@ const authSlice = createSlice({
       removeUserDataFromLocalStorage();
       state.userData = {};
     },
+    resetErrorMessage: (state) => {
+      state.error = null;
+    },
   },
   extraReducers(builder) {
     // Login Cases
@@ -120,5 +123,5 @@ const authSlice = createSlice({
 });
 
 export const selectUserData = (state) => state?.auth?.userData;
-export const { handleLogout } = authSlice.actions;
+export const { handleLogout, resetErrorMessage } = authSlice.actions;
 export const authReducer = authSlice.reducer;

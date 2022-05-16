@@ -19,8 +19,10 @@ import {
 import { testCredentials, inputChangeHandler } from '../../utilities';
 import { handleLogin } from '../../app/features';
 import { useDispatch, useSelector } from 'react-redux';
+import { useAuthErrorReset } from '../../hooks';
 
 export const LoginForm = () => {
+  useAuthErrorReset();
   const dispatch = useDispatch();
   const location = useLocation();
   const formBg = useColorModeValue('white', 'gray.700');

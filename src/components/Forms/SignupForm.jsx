@@ -18,8 +18,10 @@ import { Link as RouterLink, useLocation, Navigate } from 'react-router-dom';
 import { inputChangeHandler } from '../../utilities';
 import { handleSignup } from '../../app/features';
 import { useDispatch, useSelector } from 'react-redux';
+import { useAuthErrorReset } from '../../hooks';
 
 export const SignupForm = () => {
+  useAuthErrorReset();
   const dispatch = useDispatch();
   const location = useLocation();
   const formBg = useColorModeValue('white', 'gray.700');
