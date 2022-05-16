@@ -27,7 +27,7 @@ const loginFormFields = [
 ];
 
 export const LoginForm = () => {
-  const formBg = useColorModeValue('gray.50', 'whiteAlpha.50');
+  const formBg = useColorModeValue('white', 'gray.700');
   const fieldsListing = loginFormFields.map(({ id, type, name, label }) => {
     return (
       <VStack key={id} alignItems='flex-start' spacing={1}>
@@ -45,7 +45,7 @@ export const LoginForm = () => {
   return (
     <Box
       as='form'
-      boxShadow='base'
+      boxShadow='lg'
       w={['90%', '70%', '60%', '40%', '30%']}
       borderRadius='xl'
       p={8}
@@ -74,7 +74,7 @@ export const LoginForm = () => {
           as={RouterLink}
           to='/signup'
         >
-          Don't have an account? Create one new
+          Don't have an account? Create one now
         </Link>
       </VStack>
     </Box>
