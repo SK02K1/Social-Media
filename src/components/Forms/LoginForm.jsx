@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
+import { ViewIcon, ViewOffIcon } from '@chakra-ui/icons';
 import {
   Box,
   Heading,
@@ -8,39 +11,13 @@ import {
   VStack,
   useColorModeValue,
   Link,
+  InputGroup,
+  InputRightElement,
 } from '@chakra-ui/react';
-import { Link as RouterLink } from 'react-router-dom';
-
-const loginFormFields = [
-  {
-    id: 1,
-    type: 'text',
-    name: 'username',
-    label: 'Username',
-  },
-  {
-    id: 2,
-    type: 'password',
-    name: 'password',
-    label: 'Password',
-  },
-];
 
 export const LoginForm = () => {
   const formBg = useColorModeValue('white', 'gray.700');
-  const fieldsListing = loginFormFields.map(({ id, type, name, label }) => {
-    return (
-      <VStack key={id} alignItems='flex-start' spacing={1}>
-        <FormLabel>{label}</FormLabel>
-        <Input
-          type={type}
-          name={name}
-          id={name}
-          placeholder={`Enter your ${name}`}
-        />
-      </VStack>
-    );
-  });
+  const [showPassword, setShowPassword] = useState(false);
 
   return (
     <Box
@@ -56,7 +33,36 @@ export const LoginForm = () => {
       </Heading>
       <FormControl isRequired>
         <VStack width='full' alignItems='left' spacing={4}>
-          {fieldsListing}
+          <VStack alignItems='flex-start' spacing={1}>
+            <FormLabel>Username</FormLabel>
+            <Input
+              type='text'
+              name='username'
+              id='username'
+              placeholder='Enter your username'
+            />
+          </VStack>
+          <VStack alignItems='flex-start' spacing={1}>
+            <FormLabel>Password</FormLabel>
+            <InputGroup>
+              <Input
+                type={showPassword ? 'text' : 'password'}
+                name='password'
+                id='password'
+                placeholder='Enter your password'
+              />
+              <InputRightElement h={'full'}>
+                <Button
+                  variant={'ghost'}
+                  onClick={() =>
+                    setShowPassword((showPassword) => !showPassword)
+                  }
+                >
+                  {showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                </Button>
+              </InputRightElement>
+            </InputGroup>
+          </VStack>
           <Button size='md' w='full' colorScheme='blue' type='submit'>
             Login
           </Button>
