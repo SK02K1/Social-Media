@@ -8,6 +8,9 @@ const saveUserDataInLocalStorage = (userData) => {
 const getUserDataFromLocalStorage = () =>
   JSON.parse(localStorage.getItem('sharemoment-userData'));
 
+const removeUserDataFromLocalStorage = () =>
+  localStorage.removeItem('sharemoment-userData');
+
 export const handleLogin = createAsyncThunk(
   'auth/handleLogin',
   async ({ username, password }, { rejectWithValue }) => {
@@ -73,7 +76,12 @@ const initialState = {
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {},
+  reducers: {
+    handleLogout: (state) => {
+      removeUserDataFromLocalStorage();
+      state.userData = {};
+    },
+  },
   extraReducers(builder) {
     // Login Cases
     builder.addCase(handleLogin.pending, (state) => {
@@ -112,4 +120,5 @@ const authSlice = createSlice({
 });
 
 export const selectUserData = (state) => state?.auth?.userData;
+export const { handleLogout } = authSlice.actions;
 export const authReducer = authSlice.reducer;
