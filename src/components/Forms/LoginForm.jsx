@@ -14,10 +14,21 @@ import {
   InputGroup,
   InputRightElement,
 } from '@chakra-ui/react';
+import { testCredentials, inputChangeHandler } from '../../utilities';
 
 export const LoginForm = () => {
   const formBg = useColorModeValue('white', 'gray.700');
   const [showPassword, setShowPassword] = useState(false);
+  const [formData, setFormData] = useState({
+    username: '',
+    password: '',
+  });
+
+  const { username, password } = formData;
+
+  const fieldChangeHandler = (e) => {
+    setFormData(inputChangeHandler({ formData, e }));
+  };
 
   return (
     <Box
@@ -36,9 +47,11 @@ export const LoginForm = () => {
           <VStack alignItems='flex-start' spacing={1}>
             <FormLabel htmlFor='username'>Username</FormLabel>
             <Input
+              onChange={fieldChangeHandler}
               type='text'
               name='username'
               id='username'
+              value={username}
               placeholder='Enter your username'
             />
           </VStack>
@@ -46,9 +59,11 @@ export const LoginForm = () => {
             <FormLabel htmlFor='password'>Password</FormLabel>
             <InputGroup>
               <Input
+                onChange={fieldChangeHandler}
                 type={showPassword ? 'text' : 'password'}
                 name='password'
                 id='password'
+                value={password}
                 placeholder='Enter your password'
               />
               <InputRightElement h={'full'}>
@@ -66,7 +81,13 @@ export const LoginForm = () => {
           <Button size='md' w='full' colorScheme='blue' type='submit'>
             Login
           </Button>
-          <Button variant='outline' size='md' w='full' colorScheme='blue'>
+          <Button
+            onClick={() => setFormData(testCredentials)}
+            variant='outline'
+            size='md'
+            w='full'
+            colorScheme='blue'
+          >
             Use test credentials
           </Button>
         </VStack>
