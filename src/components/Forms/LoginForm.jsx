@@ -7,7 +7,9 @@ import {
   Button,
   VStack,
   useColorModeValue,
+  Link,
 } from '@chakra-ui/react';
+import { Link as RouterLink } from 'react-router-dom';
 
 const loginFormFields = [
   {
@@ -63,6 +65,18 @@ export const LoginForm = () => {
           </Button>
         </VStack>
       </FormControl>
+      <VStack>
+        <Link
+          display='inline-block'
+          textAlign='center'
+          p={1.5}
+          m={4}
+          as={RouterLink}
+          to='/signup'
+        >
+          Don't have an account? Create one new
+        </Link>
+      </VStack>
     </Box>
   );
 };
