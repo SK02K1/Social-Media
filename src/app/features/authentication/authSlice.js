@@ -1,11 +1,12 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
 
-const initialState = {
-  userData: JSON.parse(localStorage.getItem('sharemoment-userData')) ?? {},
-  status: 'idle',
-  error: null,
+const saveUserDataInLocalStorage = (userData) => {
+  localStorage.setItem('sharemoment-userData', JSON.stringify(userData));
 };
+
+const getUserDataFromLocalStorage = () =>
+  JSON.parse(localStorage.getItem('sharemoment-userData'));
 
 export const handleLogin = createAsyncThunk(
   'auth/handleLogin',
@@ -20,7 +21,7 @@ export const handleLogin = createAsyncThunk(
           token: data?.encodedToken,
           user: data?.foundUser,
         };
-        localStorage.setItem('sharemoment-userData', JSON.stringify(userData));
+        saveUserDataInLocalStorage(userData);
         return userData;
       }
     } catch (error) {
@@ -37,6 +38,37 @@ export const handleLogin = createAsyncThunk(
     }
   }
 );
+
+export const handleSignup = createAsyncThunk(
+  'auth/handleSignup',
+  async (formData, { rejectWithValue }) => {
+    try {
+      const { data, status } = await axios.post('/api/auth/signup', {
+        ...formData,
+      });
+      if (status === 201) {
+        const userData = {
+          token: data?.encodedToken,
+          user: data?.createdUser,
+        };
+        saveUserDataInLocalStorage(userData);
+        return userData;
+      }
+    } catch (error) {
+      const { status, message } = error.response;
+      if (status === 422) {
+        return rejectWithValue('Username already in use');
+      }
+      return rejectWithValue(message);
+    }
+  }
+);
+
+const initialState = {
+  userData: getUserDataFromLocalStorage() ?? {},
+  status: 'idle',
+  error: null,
+};
 
 const authSlice = createSlice({
   name: 'auth',
@@ -56,6 +88,23 @@ const authSlice = createSlice({
     });
 
     builder.addCase(handleLogin.rejected, (state, { payload }) => {
+      state.status = 'failed';
+      state.error = payload;
+    });
+
+    // Signup Cases
+    builder.addCase(handleSignup.pending, (state) => {
+      state.status = 'pending';
+      state.error = null;
+    });
+
+    builder.addCase(handleSignup.fulfilled, (state, { payload }) => {
+      state.status = 'succeed';
+      state.error = null;
+      state.userData = payload;
+    });
+
+    builder.addCase(handleSignup.rejected, (state, { payload }) => {
       state.status = 'failed';
       state.error = payload;
     });
