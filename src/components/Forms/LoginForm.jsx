@@ -14,6 +14,7 @@ import {
   InputGroup,
   InputRightElement,
   Spinner,
+  FormErrorMessage,
 } from '@chakra-ui/react';
 import { testCredentials, inputChangeHandler } from '../../utilities';
 import { handleLogin } from '../../app/features';
@@ -57,7 +58,15 @@ export const LoginForm = () => {
         <Heading as='h1' size='lg' textAlign='center' mb='4'>
           Login
         </Heading>
-        <FormControl isRequired>
+
+        <FormControl isRequired isInvalid={error}>
+          {error && (
+            <VStack>
+              <FormErrorMessage fontWeight={600} py={2} textAlign='center'>
+                {error}
+              </FormErrorMessage>
+            </VStack>
+          )}
           <VStack width='full' alignItems='left' spacing={4}>
             <VStack alignItems='flex-start' spacing={1}>
               <FormLabel htmlFor='username'>Username</FormLabel>

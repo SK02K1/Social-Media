@@ -46,6 +46,7 @@ const authSlice = createSlice({
     // Login Cases
     builder.addCase(handleLogin.pending, (state) => {
       state.status = 'pending';
+      state.error = null;
     });
 
     builder.addCase(handleLogin.fulfilled, (state, { payload }) => {
