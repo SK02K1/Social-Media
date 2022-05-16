@@ -1,10 +1,20 @@
-import { MoonIcon } from '@chakra-ui/icons';
-import { HStack, IconButton, Image, Text } from '@chakra-ui/react';
+import { MoonIcon, SunIcon } from '@chakra-ui/icons';
+import {
+  HStack,
+  IconButton,
+  Image,
+  Text,
+  useColorMode,
+  useColorModeValue,
+} from '@chakra-ui/react';
 import Logo from '../../logo.svg';
 
 export const Navbar = () => {
+  const { toggleColorMode } = useColorMode();
+  const themeIcon = useColorModeValue(<MoonIcon />, <SunIcon />);
+
   return (
-    <HStack as='nav' justifyContent='space-between' p={4}>
+    <HStack as='nav' justifyContent='space-between' alignItems='center' p={4}>
       <HStack cursor='pointer'>
         <Image
           boxSize='50px'
@@ -16,7 +26,12 @@ export const Navbar = () => {
           sharemomet
         </Text>
       </HStack>
-      <IconButton variant='ghost' size='md' icon={<MoonIcon />} />
+      <IconButton
+        onClick={toggleColorMode}
+        variant='outline'
+        size='md'
+        icon={themeIcon}
+      />
     </HStack>
   );
 };

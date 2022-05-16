@@ -6,6 +6,7 @@ import {
   Input,
   Button,
   VStack,
+  useColorModeValue,
 } from '@chakra-ui/react';
 
 const loginFormFields = [
@@ -24,6 +25,7 @@ const loginFormFields = [
 ];
 
 export const LoginForm = () => {
+  const formBg = useColorModeValue('gray.50', 'whiteAlpha.50');
   const fieldsListing = loginFormFields.map(({ id, type, name, label }) => {
     return (
       <VStack key={id} alignItems='flex-start' spacing={1}>
@@ -43,8 +45,9 @@ export const LoginForm = () => {
       as='form'
       boxShadow='base'
       w={['90%', '70%', '60%', '40%', '30%']}
-      borderRadius='base'
+      borderRadius='xl'
       p={8}
+      bg={formBg}
     >
       <Heading as='h1' size='lg' textAlign='center' mb='4'>
         Login
