@@ -1,8 +1,11 @@
 import React from 'react';
-import { App } from './App';
-import { makeServer } from './server';
+import { Provider } from 'react-redux';
 import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
 import { ChakraProvider } from '@chakra-ui/react';
+import { makeServer } from 'server';
+import { store } from 'app/store';
+import { App } from 'App';
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);
@@ -12,8 +15,12 @@ makeServer();
 
 root.render(
   <React.StrictMode>
-    <ChakraProvider>
-      <App />
-    </ChakraProvider>
+    <Provider store={store}>
+      <ChakraProvider>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ChakraProvider>
+    </Provider>
   </React.StrictMode>
 );
