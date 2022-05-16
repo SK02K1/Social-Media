@@ -16,10 +16,10 @@ import {
   Spinner,
   FormErrorMessage,
 } from '@chakra-ui/react';
-import { testCredentials, inputChangeHandler } from '../../utilities';
-import { handleLogin } from '../../app/features';
+import { testCredentials, inputChangeHandler } from 'utilities';
+import { handleLogin } from 'app/features';
 import { useDispatch, useSelector } from 'react-redux';
-import { useAuthErrorReset } from '../../hooks';
+import { useAuthErrorReset } from 'hooks';
 
 export const LoginForm = () => {
   useAuthErrorReset();

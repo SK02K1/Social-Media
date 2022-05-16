@@ -7,7 +7,7 @@ import {
   useColorMode,
   useColorModeValue,
 } from '@chakra-ui/react';
-import Logo from '../../logo.svg';
+import Logo from 'logo.svg';
 
 export const Navbar = () => {
   const { toggleColorMode } = useColorMode();

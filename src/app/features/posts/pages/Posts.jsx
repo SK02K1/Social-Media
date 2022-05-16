@@ -1,6 +1,6 @@
 import { Heading, Box, VStack, Button, Text } from '@chakra-ui/react';
 import { useSelector, useDispatch } from 'react-redux';
-import { handleLogout } from '../../authentication/authSlice';
+import { handleLogout } from 'app/features';
 
 export const Posts = () => {
   const { user } = useSelector((store) => store.auth.userData);

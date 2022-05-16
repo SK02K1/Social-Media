@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
 import { useDispatch } from 'react-redux';
-import { resetErrorMessage } from '../app/features';
+import { resetErrorMessage } from 'app/features';
 
 export const useAuthErrorReset = () => {
   const isMounted = useRef(false);

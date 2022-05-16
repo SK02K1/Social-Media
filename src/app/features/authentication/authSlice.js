@@ -1,5 +1,5 @@
-import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import axios from 'axios';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 
 const saveUserDataInLocalStorage = (userData) => {
   localStorage.setItem('sharemoment-userData', JSON.stringify(userData));

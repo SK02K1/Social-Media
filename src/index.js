@@ -1,11 +1,11 @@
 import React from 'react';
-import { App } from './App';
-import { makeServer } from './server';
-import { createRoot } from 'react-dom/client';
-import { ChakraProvider } from '@chakra-ui/react';
-import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
-import { store } from './app/store';
+import { createRoot } from 'react-dom/client';
+import { BrowserRouter } from 'react-router-dom';
+import { ChakraProvider } from '@chakra-ui/react';
+import { makeServer } from 'server';
+import { store } from 'app/store';
+import { App } from 'App';
 
 const rootElement = document.getElementById('root');
 const root = createRoot(rootElement);

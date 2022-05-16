@@ -1,6 +1,6 @@
 import { useSelector } from 'react-redux';
 import { useLocation, Navigate, Outlet } from 'react-router-dom';
-import { selectUserData } from '../../app/features/authentication/authSlice';
+import { selectUserData } from 'app/features';
 
 export const RequiresAuth = () => {
   const location = useLocation();

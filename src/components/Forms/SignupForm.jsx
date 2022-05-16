@@ -15,10 +15,10 @@ import {
 } from '@chakra-ui/react';
 import { useState } from 'react';
 import { Link as RouterLink, useLocation, Navigate } from 'react-router-dom';
-import { inputChangeHandler } from '../../utilities';
-import { handleSignup } from '../../app/features';
+import { inputChangeHandler } from 'utilities';
+import { handleSignup } from 'app/features';
 import { useDispatch, useSelector } from 'react-redux';
-import { useAuthErrorReset } from '../../hooks';
+import { useAuthErrorReset } from 'hooks';
 
 export const SignupForm = () => {
   useAuthErrorReset();

@@ -1,5 +1,5 @@
 import { Flex } from '@chakra-ui/react';
-import { SignupForm } from '../../../../components';
+import { SignupForm } from 'components';
 
 export const Signup = () => {
   return (
