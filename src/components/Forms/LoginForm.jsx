@@ -34,7 +34,7 @@ export const LoginForm = () => {
       <FormControl isRequired>
         <VStack width='full' alignItems='left' spacing={4}>
           <VStack alignItems='flex-start' spacing={1}>
-            <FormLabel>Username</FormLabel>
+            <FormLabel htmlFor='username'>Username</FormLabel>
             <Input
               type='text'
               name='username'
@@ -43,7 +43,7 @@ export const LoginForm = () => {
             />
           </VStack>
           <VStack alignItems='flex-start' spacing={1}>
-            <FormLabel>Password</FormLabel>
+            <FormLabel htmlFor='password'>Password</FormLabel>
             <InputGroup>
               <Input
                 type={showPassword ? 'text' : 'password'}
