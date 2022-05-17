@@ -3,28 +3,22 @@ import {
   HStack,
   IconButton,
   Image,
-  Text,
   useColorMode,
   useColorModeValue,
 } from '@chakra-ui/react';
-import Logo from 'logo.svg';
 
 export const Navbar = () => {
-  const { toggleColorMode } = useColorMode();
+  const { toggleColorMode, colorMode } = useColorMode();
   const themeIcon = useColorModeValue(<MoonIcon />, <SunIcon />);
 
   return (
     <HStack as='nav' justifyContent='space-between' alignItems='center' p={4}>
       <HStack cursor='pointer'>
         <Image
-          boxSize='50px'
-          objectFit='cover'
-          src={Logo}
+          width='10rem'
+          src={`/assets/logo-${colorMode}.svg`}
           alt='share moment logo'
         />
-        <Text fontSize='xl' fontWeight='500'>
-          sharemomet
-        </Text>
       </HStack>
       <IconButton
         onClick={toggleColorMode}
