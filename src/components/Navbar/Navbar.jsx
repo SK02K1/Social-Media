@@ -8,7 +8,7 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 
-export const Navbar = () => {
+export const Navbar = ({ bg }) => {
   const { toggleColorMode, colorMode } = useColorMode();
   const themeIcon = useColorModeValue(<MoonIcon />, <SunIcon />);
 
@@ -21,6 +21,7 @@ export const Navbar = () => {
       transform='translateX(-50%)'
       zIndex={200}
       py={4}
+      bg={bg}
     >
       <HStack as='nav' justifyContent='space-between' alignItems='center'>
         <Image
