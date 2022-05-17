@@ -1,5 +1,6 @@
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import {
+  Container,
   HStack,
   IconButton,
   Image,
@@ -12,20 +13,29 @@ export const Navbar = () => {
   const themeIcon = useColorModeValue(<MoonIcon />, <SunIcon />);
 
   return (
-    <HStack as='nav' justifyContent='space-between' alignItems='center' p={4}>
-      <HStack cursor='pointer'>
+    <Container
+      maxW='container.xl'
+      position='fixed'
+      top={0}
+      left='50%'
+      transform='translateX(-50%)'
+      zIndex={200}
+      py={4}
+    >
+      <HStack as='nav' justifyContent='space-between' alignItems='center'>
         <Image
           width='10rem'
           src={`/assets/logo-${colorMode}.svg`}
           alt='share moment logo'
         />
+
+        <IconButton
+          onClick={toggleColorMode}
+          variant='outline'
+          size='md'
+          icon={themeIcon}
+        />
       </HStack>
-      <IconButton
-        onClick={toggleColorMode}
-        variant='outline'
-        size='md'
-        icon={themeIcon}
-      />
-    </HStack>
+    </Container>
   );
 };
