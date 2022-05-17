@@ -52,7 +52,7 @@ export const LoginForm = () => {
         onSubmit={submitHandler}
         as='form'
         boxShadow='lg'
-        w={['90%', '70%', '60%', '40%', '30%']}
+        w={['100%', '75%', '55%', '40%', '35%']}
         borderRadius='xl'
         p={8}
         bg={formBg}
