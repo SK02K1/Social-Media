@@ -1,4 +1,4 @@
-import { Heading } from '@chakra-ui/react';
+import { Box, Input, useColorModeValue, VStack } from '@chakra-ui/react';
 import { SidebarWrapper } from 'components';
 
 const displayProp = {
@@ -21,7 +21,14 @@ export const RightSideBar = () => {
       colStartProp={colStartProp}
       colEndProp={colEndProp}
     >
-      <Heading textAlign='center'>Right Side Bar</Heading>
+      <VStack w='full' spacing={4} alignItems='left'>
+        <Input placeholder='Search Posts, People, anything' />
+        <Box
+          minH='20rem'
+          bg={useColorModeValue('white', 'gray.700')}
+          borderRadius='lg'
+        ></Box>
+      </VStack>
     </SidebarWrapper>
   );
 };
