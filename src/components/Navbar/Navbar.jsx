@@ -1,15 +1,23 @@
-import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 import {
+  Button,
   Container,
   Heading,
   HStack,
   IconButton,
+  Tooltip,
   useColorMode,
   useColorModeValue,
 } from '@chakra-ui/react';
 
+import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { MoonIcon, SunIcon } from '@chakra-ui/icons';
+
 export const Navbar = () => {
   const { toggleColorMode } = useColorMode();
+  const { user } = useSelector((store) => store.auth.userData);
+
+  const username = user?.username;
   const themeIcon = useColorModeValue(<MoonIcon />, <SunIcon />);
   const navbarBg = useColorModeValue(
     'rgb(247, 250, 252, 0.8)',
@@ -29,12 +37,26 @@ export const Navbar = () => {
     >
       <HStack as='nav' justifyContent='space-between' alignItems='center'>
         <Heading>LOGO</Heading>
-        <IconButton
-          onClick={toggleColorMode}
-          variant='outline'
-          size='md'
-          icon={themeIcon}
-        />
+        <HStack spacing={4}>
+          {user && (
+            <Tooltip label='View Profile'>
+              <Button
+                colorScheme='blue'
+                variant='ghost'
+                as={Link}
+                to={`/users/${username}`}
+              >
+                @{username}
+              </Button>
+            </Tooltip>
+          )}
+          <IconButton
+            onClick={toggleColorMode}
+            variant='outline'
+            size='md'
+            icon={themeIcon}
+          />
+        </HStack>
       </HStack>
     </Container>
   );
