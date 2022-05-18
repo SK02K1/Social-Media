@@ -6,6 +6,7 @@ import {
   VStack,
   Button,
   useColorMode,
+  Box,
 } from '@chakra-ui/react';
 
 import { SidebarWrapper, UserProfileMenu } from 'components';
@@ -63,7 +64,9 @@ export const LeftSideBar = () => {
           fontWeight: isActive ? '800' : '400',
         })}
       >
-        <span className='material-symbols-rounded'>{iconName}</span>
+        <Box as='span' fontSize='3xl' className='material-symbols-rounded'>
+          {iconName}
+        </Box>
         <Text>{label}</Text>
       </HStack>
     );
