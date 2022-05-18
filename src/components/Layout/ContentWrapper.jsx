@@ -2,8 +2,7 @@ import { GridItem } from '@chakra-ui/react';
 
 const colStartProp = {
   base: 1,
-  md: 4,
-  lg: 3,
+  md: 2,
 };
 
 const colEndProp = {
@@ -13,12 +12,7 @@ const colEndProp = {
 
 export const ContentWrapper = ({ children }) => {
   return (
-    <GridItem
-      colStart={colStartProp}
-      colEnd={colEndProp}
-      // bg='green.600'
-      pt={20}
-    >
+    <GridItem colStart={colStartProp} colEnd={colEndProp} pt={20}>
       {children}
     </GridItem>
   );

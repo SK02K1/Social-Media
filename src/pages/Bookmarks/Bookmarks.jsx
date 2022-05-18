@@ -1,10 +1,10 @@
-import { Heading, Box } from '@chakra-ui/react';
+import { Box, Heading } from '@chakra-ui/react';
 
-export const Home = () => {
+export const Bookmarks = () => {
   return (
     <Box>
       <Heading size='lg' textAlign='center'>
-        Home
+        Bookmarks
       </Heading>
     </Box>
   );

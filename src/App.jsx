@@ -1,7 +1,7 @@
 import { Route, Routes } from 'react-router-dom';
 import { Box, Container, useColorModeValue } from '@chakra-ui/react';
 import { Navbar, RequiresAuth } from 'components';
-import { Home } from 'pages';
+import { Home, Explore, Bookmarks } from 'pages';
 import { Login, Signup } from 'app/features';
 
 export const App = () => {
@@ -17,6 +17,8 @@ export const App = () => {
           {/* Private Routes */}
           <Route element={<RequiresAuth />}>
             <Route path='/' element={<Home />} />
+            <Route path='/explore' element={<Explore />} />
+            <Route path='/bookmarks' element={<Bookmarks />} />
           </Route>
         </Routes>
       </Container>
