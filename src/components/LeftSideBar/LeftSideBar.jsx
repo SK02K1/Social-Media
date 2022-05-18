@@ -1,4 +1,5 @@
-import { GridItem, Heading } from '@chakra-ui/react';
+import { Heading } from '@chakra-ui/react';
+import { SidebarWrapper } from 'components';
 
 const displayProp = {
   base: 'none',
@@ -16,18 +17,12 @@ const colEndProp = {
 
 export const LeftSideBar = () => {
   return (
-    <GridItem
-      // bg='red.600'
-      colStart={colStartProp}
-      colEnd={colEndProp}
-      display={displayProp}
-      position='sticky'
-      top={0}
-      height='100vh'
-      boxSizing='border-box'
-      pt={20}
+    <SidebarWrapper
+      displayProp={displayProp}
+      colStartProp={colStartProp}
+      colEndProp={colEndProp}
     >
       <Heading textAlign='center'>Left Side bar</Heading>
-    </GridItem>
+    </SidebarWrapper>
   );
 };
