@@ -1,15 +1,13 @@
 import { NavLink as RouterLink } from 'react-router-dom';
 import {
-  Box,
   HStack,
-  Link,
   Text,
   useColorModeValue,
   VStack,
   Button,
+  useColorMode,
 } from '@chakra-ui/react';
-import { FiHome, FiBookmark } from 'react-icons/fi';
-import { MdOutlineExplore } from 'react-icons/md';
+
 import { SidebarWrapper, UserProfileMenu } from 'components';
 
 const displayProp = {
@@ -30,19 +28,19 @@ const sidebarLinks = [
     id: 1,
     navigateTo: '/',
     label: 'Home',
-    icon: <FiHome />,
+    iconName: 'home',
   },
   {
     id: 2,
     navigateTo: '/explore',
     label: 'Explore',
-    icon: <MdOutlineExplore />,
+    iconName: 'explore',
   },
   {
     id: 3,
     navigateTo: '/bookmarks',
     label: 'Bookmarks',
-    icon: <FiBookmark />,
+    iconName: 'bookmark',
   },
 ];
 
@@ -50,9 +48,9 @@ export const LeftSideBar = () => {
   const linksHoverBg = useColorModeValue('gray.200', 'gray.700');
 
   const sidebarLinksListing = sidebarLinks.map((linkData) => {
-    const { id, navigateTo, label, icon } = linkData;
+    const { id, navigateTo, label, iconName } = linkData;
     return (
-      <Link
+      <HStack
         key={id}
         as={RouterLink}
         to={navigateTo}
@@ -61,13 +59,13 @@ export const LeftSideBar = () => {
         borderRadius='full'
         fontSize='xl'
         _hover={{ bg: linksHoverBg }}
-        style={({ isActive }) => ({ fontWeight: isActive ? '700' : '400' })}
+        style={({ isActive }) => ({
+          fontWeight: isActive ? '800' : '400',
+        })}
       >
-        <HStack>
-          <Box>{icon}</Box>
-          <Text>{label}</Text>
-        </HStack>
-      </Link>
+        <span className='material-symbols-rounded'>{iconName}</span>
+        <Text>{label}</Text>
+      </HStack>
     );
   });
 
