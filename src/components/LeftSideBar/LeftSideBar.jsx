@@ -85,7 +85,6 @@ export const LeftSideBar = () => {
           <Button colorScheme='blue' size='lg' w='100%'>
             Create new post
           </Button>
-          <UserProfileMenu />
         </VStack>
       </VStack>
     </SidebarWrapper>
