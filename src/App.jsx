@@ -8,7 +8,7 @@ export const App = () => {
   const appBg = useColorModeValue('#F7FAFC', '#1A202C');
   return (
     <Box minH='100vh' bg={appBg} className='App'>
-      <Navbar bg={appBg} />
+      <Navbar />
       <Container maxW='container.xl'>
         <Routes>
           {/* Public Routes */}
