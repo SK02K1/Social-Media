@@ -10,7 +10,7 @@ import {
 } from '@chakra-ui/react';
 import { FiHome, FiBookmark } from 'react-icons/fi';
 import { MdOutlineExplore } from 'react-icons/md';
-import { SidebarWrapper } from 'components';
+import { SidebarWrapper, UserProfileMenu } from 'components';
 
 const displayProp = {
   base: 'none',
@@ -77,13 +77,16 @@ export const LeftSideBar = () => {
       colStartProp={colStartProp}
       colEndProp={colEndProp}
     >
-      <VStack spacing={10} alignItems='flex-start'>
-        <VStack spacing={6} alignItems='flex-start' marginLeft={-2.5}>
-          {sidebarLinksListing}
+      <VStack spacing={100} alignItems='flex-start'>
+        <VStack spacing={10} alignItems='flex-start'>
+          <VStack spacing={6} alignItems='flex-start' marginLeft={-2.5}>
+            {sidebarLinksListing}
+          </VStack>
+          <Button colorScheme='blue' size='lg' w='100%'>
+            Create new post
+          </Button>
+          <UserProfileMenu />
         </VStack>
-        <Button colorScheme='blue' size='lg'>
-          Create new post
-        </Button>
       </VStack>
     </SidebarWrapper>
   );

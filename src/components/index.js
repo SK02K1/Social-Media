@@ -8,3 +8,4 @@ export { LeftSideBar } from './LeftSideBar/LeftSideBar';
 export { RightSideBar } from './RightSideBar/RightSideBar';
 export { BottomBar } from './BottomBar/BottomBar';
 export { SidebarWrapper } from './Layout/SidebarWrapper.jsx';
+export { UserProfileMenu } from './LeftSideBar/UserProfileMenu.jsx';
