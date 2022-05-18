@@ -16,10 +16,15 @@ const colEndProp = {
 export const RightSideBar = () => {
   return (
     <GridItem
-      bg='blue.600'
+      // bg='blue.600'
       colStart={colStartProp}
       colEnd={colEndProp}
       display={displayProp}
+      position='sticky'
+      top={0}
+      height='100vh'
+      boxSizing='border-box'
+      pt={20}
     >
       <Heading textAlign='center'>Right Side Bar</Heading>
     </GridItem>

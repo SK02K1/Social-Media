@@ -13,7 +13,12 @@ const colEndProp = {
 
 export const ContentWrapper = ({ children }) => {
   return (
-    <GridItem colStart={colStartProp} colEnd={colEndProp} bg='green.600'>
+    <GridItem
+      colStart={colStartProp}
+      colEnd={colEndProp}
+      // bg='green.600'
+      pt={20}
+    >
       {children}
     </GridItem>
   );

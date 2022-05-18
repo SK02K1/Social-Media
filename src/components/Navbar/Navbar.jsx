@@ -11,6 +11,10 @@ import {
 export const Navbar = ({ bg }) => {
   const { toggleColorMode, colorMode } = useColorMode();
   const themeIcon = useColorModeValue(<MoonIcon />, <SunIcon />);
+  const navbarBg = useColorModeValue(
+    'rgb(247, 250, 252, 0.8)',
+    'rgb(26, 32, 44, 0.8)'
+  );
 
   return (
     <Container
@@ -21,7 +25,8 @@ export const Navbar = ({ bg }) => {
       transform='translateX(-50%)'
       zIndex={200}
       py={4}
-      bg={bg}
+      // bg={bg}
+      bg={navbarBg}
     >
       <HStack as='nav' justifyContent='space-between' alignItems='center'>
         <Image

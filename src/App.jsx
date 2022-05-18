@@ -9,7 +9,7 @@ export const App = () => {
   return (
     <Box minH='100vh' bg={appBg} className='App'>
       <Navbar bg={appBg} />
-      <Container maxW='container.xl' pt='20'>
+      <Container maxW='container.xl'>
         <Routes>
           {/* Public Routes */}
           <Route path='/login' element={<Login />} />
