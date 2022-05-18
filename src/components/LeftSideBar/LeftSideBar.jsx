@@ -1,4 +1,3 @@
-import { NavLink as RouterLink } from 'react-router-dom';
 import {
   HStack,
   Text,
@@ -8,7 +7,10 @@ import {
   Box,
 } from '@chakra-ui/react';
 
-import { SidebarWrapper, UserProfileMenu } from 'components';
+import { NavLink as RouterLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { SidebarWrapper } from 'components';
+import { handleLogout } from 'app/features';
 
 const displayProp = {
   base: 'none',
@@ -45,6 +47,7 @@ const sidebarLinks = [
 ];
 
 export const LeftSideBar = () => {
+  const dispatch = useDispatch();
   const linksHoverBg = useColorModeValue('gray.200', 'gray.700');
 
   const sidebarLinksListing = sidebarLinks.map((linkData) => {
@@ -77,13 +80,26 @@ export const LeftSideBar = () => {
       colStartProp={colStartProp}
       colEndProp={colEndProp}
     >
-      <VStack spacing={100} alignItems='flex-start'>
-        <VStack spacing={10} alignItems='flex-start'>
-          <VStack spacing={6} alignItems='flex-start' marginLeft={-2.5}>
-            {sidebarLinksListing}
-          </VStack>
-          <Button colorScheme='blue' size='lg' w='100%'>
+      <VStack
+        height='80vh'
+        justifyContent='space-between'
+        alignItems='flex-start'
+      >
+        <VStack spacing={6} alignItems='flex-start' marginLeft={-3}>
+          {sidebarLinksListing}
+        </VStack>
+        <VStack spacing={6} alignItems='flex-start'>
+          <Button colorScheme='blue' size='md' w='full'>
             Create new post
+          </Button>
+          <Button
+            onClick={() => dispatch(handleLogout())}
+            w='full'
+            bg='red.500'
+            color='white'
+            _hover={{ bg: 'red.400' }}
+          >
+            Logout
           </Button>
         </VStack>
       </VStack>
