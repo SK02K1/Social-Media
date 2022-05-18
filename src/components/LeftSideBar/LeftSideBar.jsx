@@ -5,7 +5,6 @@ import {
   useColorModeValue,
   VStack,
   Button,
-  useColorMode,
   Box,
 } from '@chakra-ui/react';
 
@@ -41,7 +40,7 @@ const sidebarLinks = [
     id: 3,
     navigateTo: '/bookmarks',
     label: 'Bookmarks',
-    iconName: 'bookmark',
+    iconName: 'bookmarks',
   },
 ];
 
