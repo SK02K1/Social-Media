@@ -7,3 +7,5 @@ export {
   resetErrorMessage,
   selectUserData,
 } from './authentication/authSlice';
+
+export { getAllPosts } from './posts/postsSlice';
