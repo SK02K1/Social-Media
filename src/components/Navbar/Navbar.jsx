@@ -1,9 +1,9 @@
 import {
   Button,
   Container,
-  Heading,
   HStack,
   IconButton,
+  Image,
   Tooltip,
   useColorMode,
   useColorModeValue,
@@ -14,7 +14,7 @@ import { useSelector } from 'react-redux';
 import { MoonIcon, SunIcon } from '@chakra-ui/icons';
 
 export const Navbar = () => {
-  const { toggleColorMode } = useColorMode();
+  const { toggleColorMode, colorMode } = useColorMode();
   const { user } = useSelector((store) => store.auth.userData);
 
   const username = user?.username;
@@ -36,7 +36,11 @@ export const Navbar = () => {
       bg={navbarBg}
     >
       <HStack as='nav' justifyContent='space-between' alignItems='center'>
-        <Heading>LOGO</Heading>
+        <Image
+          width='4rem'
+          src={`/assets/logo-${colorMode}.svg`}
+          alt='share moment logo'
+        />
         <HStack spacing={4}>
           {user && (
             <Tooltip label='View Profile'>
