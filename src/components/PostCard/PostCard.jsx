@@ -7,7 +7,6 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 
-import { BsThreeDotsVertical } from 'react-icons/bs';
 import { MdOutlineModeComment } from 'react-icons/md';
 import { BiShareAlt } from 'react-icons/bi';
 import {
@@ -17,9 +16,14 @@ import {
   BsBookmarkFill,
 } from 'react-icons/bs';
 
+import { PostCardControls } from './PostCardControls';
+import { useSelector } from 'react-redux';
+
 export const PostCard = ({ postData }) => {
+  const { username: uid } = useSelector((store) => store.auth.userData.user);
   const { firstName, lastName, username, content, img } = postData;
   const fullname = `${firstName} ${lastName}`;
+  const isMyPost = username === uid;
   return (
     <HStack
       mb={8}
@@ -39,9 +43,11 @@ export const PostCard = ({ postData }) => {
             </Text>
             <Text opacity={0.6}>@{username}</Text>
           </HStack>
-          <Box fontSize='lg'>
-            <BsThreeDotsVertical />
-          </Box>
+          {isMyPost && (
+            <Box fontSize='lg'>
+              <PostCardControls />
+            </Box>
+          )}
         </HStack>
         {img && <img src={img} alt='post' />}
         <Text whiteSpace='pre-wrap'>{content}</Text>
