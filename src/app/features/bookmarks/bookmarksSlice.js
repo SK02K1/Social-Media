@@ -36,6 +36,26 @@ export const addToBookmarks = createAsyncThunk(
   }
 );
 
+export const removeFromBookmarks = createAsyncThunk(
+  'bookmarks/removeFromBookmarks',
+  async ({ postID, token }, { rejectWithValue }) => {
+    try {
+      const { data, status } = await axios.post(
+        `/api/users/remove-bookmark/${postID}`,
+        {},
+        { headers: { authorization: token } }
+      );
+      if (status === 200) {
+        return { bookmarks: data.bookmarks };
+      }
+    } catch (error) {
+      return rejectWithValue({
+        errorMessage: 'Failed in removing from bookmarks',
+      });
+    }
+  }
+);
+
 const initialState = {
   bookmarks: null,
   status: 'idle',
@@ -93,6 +113,23 @@ const bookmarksSlice = createSlice({
     });
 
     builder.addCase(addToBookmarks.rejected, (state, payload) => {
+      state.error = payload.errorMessage;
+      state.status = 'failed';
+    });
+
+    // REMOVE FROM BOOKMARKS CASES
+    builder.addCase(removeFromBookmarks.pending, (state) => {
+      state.status = 'pending';
+      state.error = null;
+    });
+
+    builder.addCase(removeFromBookmarks.fulfilled, (state, { payload }) => {
+      state.status = 'succeeded';
+      state.bookmarks = payload.bookmarks.reverse();
+      state.error = null;
+    });
+
+    builder.addCase(removeFromBookmarks.rejected, (state, payload) => {
       state.error = payload.errorMessage;
       state.status = 'failed';
     });

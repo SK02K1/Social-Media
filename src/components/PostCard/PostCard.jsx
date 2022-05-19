@@ -20,7 +20,11 @@ import { Link } from 'react-router-dom';
 import { PostCardControls } from './PostCardControls';
 import { useDispatch, useSelector } from 'react-redux';
 import { isPostAlreadyBookmarked, isPostAlreadyLiked } from 'utilities';
-import { likeDislikePost, addToBookmarks } from 'app/features';
+import {
+  likeDislikePost,
+  addToBookmarks,
+  removeFromBookmarks,
+} from 'app/features';
 
 export const PostCard = ({ postData }) => {
   const dispatch = useDispatch();
@@ -57,7 +61,11 @@ export const PostCard = ({ postData }) => {
   };
 
   const bookmarkHandler = () => {
-    dispatch(addToBookmarks({ postID: _id, token }));
+    dispatch(
+      isPostBookmarked
+        ? removeFromBookmarks({ postID: _id, token })
+        : addToBookmarks({ postID: _id, token })
+    );
   };
 
   return (
