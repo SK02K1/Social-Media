@@ -9,13 +9,9 @@ import {
 
 import { MdOutlineModeComment } from 'react-icons/md';
 import { BiShareAlt } from 'react-icons/bi';
-import {
-  BsHeartFill,
-  BsHeart,
-  BsBookmark,
-  BsBookmarkFill,
-} from 'react-icons/bs';
+import { BsHeart, BsBookmark } from 'react-icons/bs';
 
+import { Link } from 'react-router-dom';
 import { PostCardControls } from './PostCardControls';
 import { useSelector } from 'react-redux';
 
@@ -69,13 +65,20 @@ export const PostCard = ({ postData }) => {
           )}
         </HStack>
         {img && <img src={img} alt='post' />}
-        <Text whiteSpace='pre-wrap'>{content}</Text>
+        <Text
+          as={Link}
+          to={`/posts/${_id}`}
+          cursor='pointer'
+          whiteSpace='pre-wrap'
+        >
+          {content}
+        </Text>
         <HStack w='full' fontSize='lg' justifyContent='space-between'>
           <HStack alignItems='center'>
             <BsHeart />
             <Text fontSize='sm'>{likeCount}</Text>
           </HStack>
-          <HStack alignItems='center'>
+          <HStack as={Link} to={`/posts/${_id}`} alignItems='center'>
             <MdOutlineModeComment />
             <Text fontSize='sm'>{commentCount}</Text>
           </HStack>
