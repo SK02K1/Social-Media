@@ -21,10 +21,23 @@ import { useSelector } from 'react-redux';
 
 export const PostCard = ({ postData }) => {
   const { username: uid } = useSelector((store) => store.auth.userData.user);
-  const { _id, firstName, lastName, username, content, img, avatarURL } =
-    postData;
+  const {
+    _id,
+    firstName,
+    lastName,
+    username,
+    content,
+    img,
+    avatarURL,
+    likes,
+    comments,
+  } = postData;
+  const { likeCount } = likes;
+  const commentCount = comments.length;
+
   const fullname = `${firstName} ${lastName}`;
   const isMyPost = username === uid;
+
   return (
     <HStack
       spacing={4}
@@ -58,8 +71,14 @@ export const PostCard = ({ postData }) => {
         {img && <img src={img} alt='post' />}
         <Text whiteSpace='pre-wrap'>{content}</Text>
         <HStack w='full' fontSize='lg' justifyContent='space-between'>
-          <BsHeart />
-          <MdOutlineModeComment />
+          <HStack alignItems='center'>
+            <BsHeart />
+            <Text fontSize='sm'>{likeCount}</Text>
+          </HStack>
+          <HStack alignItems='center'>
+            <MdOutlineModeComment />
+            <Text fontSize='sm'>{commentCount}</Text>
+          </HStack>
           <BiShareAlt />
           <BsBookmark />
         </HStack>

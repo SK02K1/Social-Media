@@ -15,7 +15,7 @@ export const posts = [
       'https://pbs.twimg.com/profile_images/1501178147420585987/5_2plEJW_400x400.jpg',
     content: `Be the person who puts other first. But also have people who will put you first. Balance is important.`,
     likes: {
-      likeCount: 0,
+      likeCount: 3,
       likedBy: [],
       dislikedBy: [],
     },
@@ -51,7 +51,7 @@ export const posts = [
       'https://pbs.twimg.com/profile_images/1085823173419880448/oDNqP1T3_400x400.jpg',
     content: `Don't hate errors and bugs. They're not your enemies. It's a part of your programming journey. See errors and bugs as a sign that you're pushing your boundaries. It shows growth.`,
     likes: {
-      likeCount: 0,
+      likeCount: 10,
       likedBy: [],
       dislikedBy: [],
     },
