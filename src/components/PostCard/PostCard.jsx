@@ -9,18 +9,26 @@ import {
 
 import { MdOutlineModeComment } from 'react-icons/md';
 import { BiShareAlt } from 'react-icons/bi';
-import { BsHeart, BsBookmark, BsHeartFill } from 'react-icons/bs';
+import {
+  BsHeart,
+  BsBookmark,
+  BsHeartFill,
+  BsBookmarkFill,
+} from 'react-icons/bs';
 
 import { Link } from 'react-router-dom';
 import { PostCardControls } from './PostCardControls';
 import { useDispatch, useSelector } from 'react-redux';
-import { isPostAlreadyLiked } from 'utilities';
-import { likeDislikePost } from 'app/features';
+import { isPostAlreadyBookmarked, isPostAlreadyLiked } from 'utilities';
+import { likeDislikePost, addToBookmarks } from 'app/features';
 
 export const PostCard = ({ postData }) => {
   const dispatch = useDispatch();
   const { status } = useSelector((store) => store.posts);
   const { user, token } = useSelector((store) => store.auth.userData);
+  const { bookmarks, status: bookmarksStatus } = useSelector(
+    (store) => store.bookmarks
+  );
   const { username: uid } = user;
 
   const {
@@ -41,10 +49,15 @@ export const PostCard = ({ postData }) => {
   const fullname = `${firstName} ${lastName}`;
   const isMyPost = username === uid;
   const isPostLiked = isPostAlreadyLiked({ likedBy, uid });
+  const isPostBookmarked = isPostAlreadyBookmarked({ bookmarks, postID: _id });
 
   const likeDislikeHandler = () => {
     const action = isPostLiked ? 'dislike' : 'like';
     dispatch(likeDislikePost({ postID: _id, action, token }));
+  };
+
+  const bookmarkHandler = () => {
+    dispatch(addToBookmarks({ postID: _id, token }));
   };
 
   return (
@@ -104,7 +117,15 @@ export const PostCard = ({ postData }) => {
             <Text fontSize='sm'>{commentCount}</Text>
           </HStack>
           <BiShareAlt />
-          <BsBookmark />
+          <HStack
+            onClick={bookmarkHandler}
+            as='button'
+            alignItems='center'
+            _disabled={{ cursor: 'not-allowed' }}
+            disabled={bookmarksStatus === 'pending'}
+          >
+            {isPostBookmarked ? <BsBookmarkFill /> : <BsBookmark />}
+          </HStack>
         </HStack>
       </VStack>
     </HStack>

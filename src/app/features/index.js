@@ -15,3 +15,5 @@ export {
   editPost,
   likeDislikePost,
 } from './posts/postsSlice';
+
+export { getAllBookmarks, addToBookmarks } from './bookmarks/bookmarksSlice';
