@@ -17,7 +17,7 @@ export const Home = () => {
   return (
     <Box>
       <CreatePost />
-      {status === 'pending' && (
+      {status === 'pending' && !posts && (
         <VStack w='full' my={8}>
           <Spinner speed='0.2s' size='sm' />
         </VStack>

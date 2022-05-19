@@ -9,14 +9,20 @@ import {
 
 import { MdOutlineModeComment } from 'react-icons/md';
 import { BiShareAlt } from 'react-icons/bi';
-import { BsHeart, BsBookmark } from 'react-icons/bs';
+import { BsHeart, BsBookmark, BsHeartFill } from 'react-icons/bs';
 
 import { Link } from 'react-router-dom';
 import { PostCardControls } from './PostCardControls';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { isPostAlreadyLiked } from 'utilities';
+import { likeDislikePost } from 'app/features';
 
 export const PostCard = ({ postData }) => {
-  const { username: uid } = useSelector((store) => store.auth.userData.user);
+  const dispatch = useDispatch();
+  const { status } = useSelector((store) => store.posts);
+  const { user, token } = useSelector((store) => store.auth.userData);
+  const { username: uid } = user;
+
   const {
     _id,
     firstName,
@@ -25,14 +31,21 @@ export const PostCard = ({ postData }) => {
     content,
     img,
     avatarURL,
-    likes,
     comments,
+    likes,
   } = postData;
-  const { likeCount } = likes;
+
+  const { likeCount, likedBy } = likes;
   const commentCount = comments.length;
 
   const fullname = `${firstName} ${lastName}`;
   const isMyPost = username === uid;
+  const isPostLiked = isPostAlreadyLiked({ likedBy, uid });
+
+  const likeDislikeHandler = () => {
+    const action = isPostLiked ? 'dislike' : 'like';
+    dispatch(likeDislikePost({ postID: _id, action, token }));
+  };
 
   return (
     <HStack
@@ -76,8 +89,14 @@ export const PostCard = ({ postData }) => {
           {content}
         </Text>
         <HStack w='full' fontSize='lg' justifyContent='space-between'>
-          <HStack alignItems='center'>
-            <BsHeart />
+          <HStack
+            as='button'
+            onClick={likeDislikeHandler}
+            alignItems='center'
+            disabled={status === 'pending'}
+            _disabled={{ cursor: 'not-allowed' }}
+          >
+            {isPostLiked ? <BsHeartFill /> : <BsHeart />}
             <Text fontSize='sm'>{likeCount}</Text>
           </HStack>
           <HStack as={Link} to={`/posts/${_id}`} alignItems='center'>

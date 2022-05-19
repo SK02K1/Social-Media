@@ -68,6 +68,30 @@ export const editPost = createAsyncThunk(
   }
 );
 
+export const likeDislikePost = createAsyncThunk(
+  'posts/likeDislikePost',
+  async ({ postID, action, token }, { rejectWithValue }) => {
+    try {
+      const { data, status } = await axios.post(
+        `/api/posts/${action}/${postID}`,
+        {},
+        {
+          headers: { authorization: token },
+        }
+      );
+      if (status === 201) {
+        return {
+          likesData: data.posts.find(({ _id }) => _id === postID).likes,
+          postID,
+        };
+      }
+    } catch (error) {
+      console.log(error);
+      return rejectWithValue({ errorMessage: `Failed to ${action}` });
+    }
+  }
+);
+
 const initialState = {
   posts: null,
   status: 'idle',
@@ -136,6 +160,22 @@ const postsSlice = createSlice({
       state.error = null;
     });
     builder.addCase(editPost.rejected, (state, { payload }) => {
+      state.error = payload.errorMessage;
+      state.status = 'failed';
+    });
+
+    // Edit Post Cases
+    builder.addCase(likeDislikePost.pending, (state) => {
+      state.status = 'pending';
+      state.error = null;
+    });
+    builder.addCase(likeDislikePost.fulfilled, (state, { payload }) => {
+      state.posts.find(({ _id }) => _id === payload.postID).likes =
+        payload.likesData;
+      state.status = 'succeeded';
+      state.error = null;
+    });
+    builder.addCase(likeDislikePost.rejected, (state, { payload }) => {
       state.error = payload.errorMessage;
       state.status = 'failed';
     });
