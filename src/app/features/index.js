@@ -8,4 +8,9 @@ export {
   selectUserData,
 } from './authentication/authSlice';
 
-export { getAllPosts, createNewPost, deletePost } from './posts/postsSlice';
+export {
+  getAllPosts,
+  createNewPost,
+  deletePost,
+  editPost,
+} from './posts/postsSlice';

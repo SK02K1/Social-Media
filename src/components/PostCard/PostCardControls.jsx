@@ -8,8 +8,9 @@ import {
 
 import { BsThreeDotsVertical } from 'react-icons/bs';
 
-import { deletePost } from 'app/features';
 import { useDispatch, useSelector } from 'react-redux';
+import { deletePost } from 'app/features';
+import { PostEditModal } from './PostEditModal';
 
 export const PostCardControls = ({ postID }) => {
   const dispatch = useDispatch();
@@ -25,7 +26,7 @@ export const PostCardControls = ({ postID }) => {
         <BsThreeDotsVertical />
       </MenuButton>
       <MenuList fontSize='sm' minW={150}>
-        <MenuItem>Edit</MenuItem>
+        <PostEditModal postID={postID} />
         <MenuItem
           onClick={deletePostHandler}
           fontWeight='600'

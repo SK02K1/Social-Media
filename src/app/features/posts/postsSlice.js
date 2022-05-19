@@ -44,7 +44,26 @@ export const deletePost = createAsyncThunk(
         return { postID };
       }
     } catch (error) {
-      return rejectWithValue('Failed in deleting the post');
+      return rejectWithValue({ errorMessage: 'Failed in deleting the post' });
+    }
+  }
+);
+
+export const editPost = createAsyncThunk(
+  'posts/editPost',
+  async ({ postData, token }, { rejectWithValue }) => {
+    const { _id: postID } = postData;
+    try {
+      const { data, status } = await axios.post(
+        `/api/posts/edit/${postID}`,
+        { postData },
+        { headers: { authorization: token } }
+      );
+      if (status === 201) {
+        return { editedPost: data.posts.find(({ _id }) => _id === postID) };
+      }
+    } catch (error) {
+      return rejectWithValue({ errorMessage: 'Failed in editing the post' });
     }
   }
 );
@@ -101,6 +120,22 @@ const postsSlice = createSlice({
       state.error = null;
     });
     builder.addCase(deletePost.rejected, (state, { payload }) => {
+      state.error = payload.errorMessage;
+      state.status = 'failed';
+    });
+
+    // Edit Post Cases
+    builder.addCase(editPost.pending, (state) => {
+      state.status = 'pending';
+      state.error = null;
+    });
+    builder.addCase(editPost.fulfilled, (state, { payload }) => {
+      state.posts.find(({ _id }) => _id === payload.editedPost._id).content =
+        payload.editedPost.content;
+      state.status = 'succeeded';
+      state.error = null;
+    });
+    builder.addCase(editPost.rejected, (state, { payload }) => {
       state.error = payload.errorMessage;
       state.status = 'failed';
     });
