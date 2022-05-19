@@ -51,6 +51,7 @@ export const CreatePost = () => {
       alignItems='flex-start'
       bg={useColorModeValue('white', 'gray.700')}
       borderRadius='lg'
+      boxShadow='xl'
     >
       <Avatar size='md' name={fullname} src={avatarURL} />
       <VStack width='full' h='auto' alignItems='flex-start' spacing={6}>
