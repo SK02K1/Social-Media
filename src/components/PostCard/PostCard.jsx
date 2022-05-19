@@ -21,11 +21,13 @@ import { useSelector } from 'react-redux';
 
 export const PostCard = ({ postData }) => {
   const { username: uid } = useSelector((store) => store.auth.userData.user);
-  const { _id, firstName, lastName, username, content, img } = postData;
+  const { _id, firstName, lastName, username, content, img, avatarURL } =
+    postData;
   const fullname = `${firstName} ${lastName}`;
   const isMyPost = username === uid;
   return (
     <HStack
+      spacing={4}
       mb={8}
       px={4}
       py={8}
@@ -34,14 +36,18 @@ export const PostCard = ({ postData }) => {
       bg={useColorModeValue('white', 'gray.700')}
       borderRadius='lg'
     >
-      <Avatar size='sm' name={fullname} />
+      <Avatar size='md' name={fullname} src={avatarURL} />
       <VStack width='full' h='auto' alignItems='flex-start' spacing={6}>
         <HStack w='full' justifyContent='space-between'>
           <HStack spacing={2}>
-            <Text fontWeight='600' noOfLines={0}>
-              {fullname}
-            </Text>
-            <Text opacity={0.6}>@{username}</Text>
+            <VStack spacing={1} alignItems='flex-start'>
+              <Text fontWeight='600' noOfLines={0}>
+                {fullname}
+              </Text>
+              <Text fontSize='sm' opacity={0.6}>
+                @{username}
+              </Text>
+            </VStack>
           </HStack>
           {isMyPost && (
             <Box fontSize='lg'>

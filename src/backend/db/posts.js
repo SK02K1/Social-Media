@@ -11,9 +11,9 @@ export const posts = [
     _id: uuid(),
     firstName: 'Tanay',
     lastName: 'Pratap',
-    content:
-      'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.',
-    img: 'https://c.tenor.com/guxyYW8OazAAAAAM/tanay-tanay-pratap.gif',
+    avatarURL:
+      'https://pbs.twimg.com/profile_images/1501178147420585987/5_2plEJW_400x400.jpg',
+    content: `Be the person who puts other first. But also have people who will put you first. Balance is important.`,
     likes: {
       likeCount: 0,
       likedBy: [],
@@ -45,17 +45,17 @@ export const posts = [
   },
   {
     _id: uuid(),
-    firstName: 'Shubham',
-    lastName: 'Soni',
-    content:
-      'At vero eos et accusamus et iusto odio dignissimos ducimus qui blanditiis praesentium voluptatum deleniti atque corrupti quos dolores et quas molestias excepturi sint occaecati cupiditate non provident, similique sunt in culpa qui officia deserunt mollitia animi, id est laborum et dolorum fuga. Et harum quidem rerum facilis est et expedita distinctio. Nam libero tempore, cum soluta nobis est eligendi optio cumque nihil impedit quo minus id quod maxime placeat facere possimus, omnis voluptas assumenda est, omnis dolor repellendus. Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores repellat.',
-    img: 'https://avatars.githubusercontent.com/u/55895224?v=4',
+    firstName: 'Akanksha',
+    lastName: 'Choudhary',
+    avatarURL:
+      'https://pbs.twimg.com/profile_images/1085823173419880448/oDNqP1T3_400x400.jpg',
+    content: `Don't hate errors and bugs. They're not your enemies. It's a part of your programming journey. See errors and bugs as a sign that you're pushing your boundaries. It shows growth.`,
     likes: {
       likeCount: 0,
       likedBy: [],
       dislikedBy: [],
     },
-    username: 'shubhamsoni',
+    username: 'ch_akanksha',
 
     comments: [
       {
