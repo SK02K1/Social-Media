@@ -30,7 +30,7 @@ export const PostCard = ({ postData }) => {
       bg={useColorModeValue('white', 'gray.700')}
       borderRadius='lg'
     >
-      <Avatar flexGrow={2} size='md' name={fullname} />
+      <Avatar size='sm' name={fullname} />
       <VStack width='full' h='auto' alignItems='flex-start' spacing={6}>
         <HStack w='full' justifyContent='space-between'>
           <HStack spacing={2}>

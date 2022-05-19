@@ -51,7 +51,7 @@ export const CreatePost = () => {
       bg={useColorModeValue('white', 'gray.700')}
       borderRadius='lg'
     >
-      <Avatar flexGrow={2} size='md' name='Tanay Pratap' />
+      <Avatar size='sm' name='Tanay Pratap' />
       <VStack width='full' h='auto' alignItems='flex-start' spacing={6}>
         <Textarea
           onChange={inputChangeHandler}
