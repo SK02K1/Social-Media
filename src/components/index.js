@@ -8,3 +8,6 @@ export { LeftSideBar } from './LeftSideBar/LeftSideBar';
 export { RightSideBar } from './RightSideBar/RightSideBar';
 export { BottomBar } from './BottomBar/BottomBar';
 export { SidebarWrapper } from './Layout/SidebarWrapper.jsx';
+export { PostCard } from './PostCard/PostCard';
+export { CreatePost } from './CreatePost/CreatePost';
+export { PostCardControls } from './PostCard/PostCardControls';

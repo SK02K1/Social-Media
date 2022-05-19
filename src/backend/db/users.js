@@ -12,6 +12,7 @@ export const users = [
     lastName: 'Kheraliya',
     username: 'sk02k1',
     password: '12345678',
+    avatarURL: 'https://avatars.githubusercontent.com/u/55895224?v=4',
     createdAt: formatDate(),
     updatedAt: formatDate(),
   },

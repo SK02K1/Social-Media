@@ -27,6 +27,7 @@ export const RightSideBar = () => {
           minH='20rem'
           bg={useColorModeValue('white', 'gray.700')}
           borderRadius='lg'
+          boxShadow='xl'
         ></Box>
       </VStack>
     </SidebarWrapper>
