@@ -11,12 +11,18 @@ import { BsThreeDotsVertical } from 'react-icons/bs';
 import { useDispatch, useSelector } from 'react-redux';
 import { deletePost } from 'app/features';
 import { PostEditModal } from './PostEditModal';
+import { useLocation, useNavigate } from 'react-router-dom';
 
 export const PostCardControls = ({ postID }) => {
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
   const dispatch = useDispatch();
   const { token } = useSelector((store) => store.auth.userData);
 
   const deletePostHandler = () => {
+    if (pathname.split('/')[1] === 'posts') {
+      navigate('/', { replace: true });
+    }
     dispatch(deletePost({ postID, token }));
   };
 
