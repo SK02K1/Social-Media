@@ -33,6 +33,22 @@ export const createNewPost = createAsyncThunk(
   }
 );
 
+export const deletePost = createAsyncThunk(
+  'posts/deletePost',
+  async ({ postID, token }, { rejectWithValue }) => {
+    try {
+      const { status } = await axios.delete(`/api/posts/${postID}`, {
+        headers: { authorization: token },
+      });
+      if (status === 201) {
+        return { postID };
+      }
+    } catch (error) {
+      return rejectWithValue('Failed in deleting the post');
+    }
+  }
+);
+
 const initialState = {
   posts: null,
   status: 'idle',
@@ -70,6 +86,21 @@ const postsSlice = createSlice({
       state.error = null;
     });
     builder.addCase(createNewPost.rejected, (state, { payload }) => {
+      state.error = payload.errorMessage;
+      state.status = 'failed';
+    });
+
+    // Delete Post Cases
+    builder.addCase(deletePost.pending, (state) => {
+      state.status = 'pending';
+      state.error = null;
+    });
+    builder.addCase(deletePost.fulfilled, (state, { payload }) => {
+      state.posts = state.posts.filter(({ _id }) => _id !== payload.postID);
+      state.status = 'succeeded';
+      state.error = null;
+    });
+    builder.addCase(deletePost.rejected, (state, { payload }) => {
       state.error = payload.errorMessage;
       state.status = 'failed';
     });

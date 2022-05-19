@@ -21,7 +21,7 @@ import { useSelector } from 'react-redux';
 
 export const PostCard = ({ postData }) => {
   const { username: uid } = useSelector((store) => store.auth.userData.user);
-  const { firstName, lastName, username, content, img } = postData;
+  const { _id, firstName, lastName, username, content, img } = postData;
   const fullname = `${firstName} ${lastName}`;
   const isMyPost = username === uid;
   return (
@@ -45,7 +45,7 @@ export const PostCard = ({ postData }) => {
           </HStack>
           {isMyPost && (
             <Box fontSize='lg'>
-              <PostCardControls />
+              <PostCardControls postID={_id} />
             </Box>
           )}
         </HStack>
