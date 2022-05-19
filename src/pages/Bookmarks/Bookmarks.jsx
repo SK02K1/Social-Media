@@ -1,19 +1,10 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { Box, Heading, Spinner, Text, VStack } from '@chakra-ui/react';
-import { getAllBookmarks } from 'app/features';
+
 import { PostCard } from 'components';
 
 export const Bookmarks = () => {
-  const dispatch = useDispatch();
-  const { token } = useSelector((store) => store.auth.userData);
   const { bookmarks, status, error } = useSelector((store) => store.bookmarks);
-
-  useEffect(() => {
-    if (!bookmarks) {
-      dispatch(getAllBookmarks({ token }));
-    }
-  }, [bookmarks, dispatch, token]);
 
   return (
     <Box>
