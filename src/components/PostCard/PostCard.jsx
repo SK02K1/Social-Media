@@ -66,6 +66,7 @@ export const PostCard = ({ postData }) => {
         </HStack>
         {img && <img src={img} alt='post' />}
         <Text
+          w='full'
           as={Link}
           to={`/posts/${_id}`}
           cursor='pointer'
