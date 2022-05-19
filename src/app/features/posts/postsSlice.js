@@ -15,6 +15,24 @@ export const getAllPosts = createAsyncThunk(
   }
 );
 
+export const createNewPost = createAsyncThunk(
+  'posts/createNewPost',
+  async ({ token, postData }, { rejectWithValue }) => {
+    try {
+      const { data, status } = await axios.post(
+        '/api/posts',
+        { postData },
+        { headers: { authorization: token } }
+      );
+      if (status === 201) {
+        return { post: data.posts[data.posts.length - 1] };
+      }
+    } catch (error) {
+      return rejectWithValue({ errorMessage: 'Failed in posting your moment' });
+    }
+  }
+);
+
 const initialState = {
   posts: null,
   status: 'idle',
@@ -26,6 +44,7 @@ const postsSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers(builder) {
+    // Get Posts Cases
     builder.addCase(getAllPosts.pending, (state) => {
       state.status = 'pending';
       state.error = null;
@@ -36,6 +55,21 @@ const postsSlice = createSlice({
       state.error = null;
     });
     builder.addCase(getAllPosts.rejected, (state, { payload }) => {
+      state.error = payload.errorMessage;
+      state.status = 'failed';
+    });
+
+    // Create Post Cases
+    builder.addCase(createNewPost.pending, (state) => {
+      state.status = 'pending';
+      state.error = null;
+    });
+    builder.addCase(createNewPost.fulfilled, (state, { payload }) => {
+      state.posts.unshift(payload.post);
+      state.status = 'succeeded';
+      state.error = null;
+    });
+    builder.addCase(createNewPost.rejected, (state, { payload }) => {
       state.error = payload.errorMessage;
       state.status = 'failed';
     });

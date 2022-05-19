@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Spinner, VStack, Text } from '@chakra-ui/react';
 import { getAllPosts } from 'app/features';
-import { PostCard } from 'components';
+import { CreatePost, PostCard } from 'components';
 
 export const Home = () => {
   const dispatch = useDispatch();
@@ -16,6 +16,7 @@ export const Home = () => {
 
   return (
     <Box>
+      <CreatePost />
       {status === 'pending' && (
         <VStack w='full' my={8}>
           <Spinner speed='0.2s' size='sm' />
