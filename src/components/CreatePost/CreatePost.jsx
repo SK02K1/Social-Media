@@ -31,7 +31,7 @@ export const CreatePost = () => {
   const inputChangeHandler = (e) => setContent(e.target.value);
 
   const postBtnHandler = () => {
-    const postData = { content, firstName, lastName };
+    const postData = { content };
     dispatch(createNewPost({ token, postData }));
   };
 
