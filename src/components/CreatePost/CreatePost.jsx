@@ -21,12 +21,13 @@ export const CreatePost = () => {
 
   const {
     token,
-    user: { firstName, lastName },
+    user: { firstName, lastName, avatarURL },
   } = useSelector((store) => store.auth.userData);
 
   const { status } = useSelector((store) => store.posts);
 
   const isEmpty = !Boolean(content.length);
+  const fullname = `${firstName} ${lastName}`;
 
   const inputChangeHandler = (e) => setContent(e.target.value);
 
@@ -51,7 +52,7 @@ export const CreatePost = () => {
       bg={useColorModeValue('white', 'gray.700')}
       borderRadius='lg'
     >
-      <Avatar size='sm' name='Tanay Pratap' />
+      <Avatar size='md' name={fullname} src={avatarURL} />
       <VStack width='full' h='auto' alignItems='flex-start' spacing={6}>
         <Textarea
           onChange={inputChangeHandler}
