@@ -9,6 +9,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { deleteComment } from 'app/features';
+import { CommentEditModal } from './CommentEditModal';
 
 export const CommentControls = ({ postID, commentID }) => {
   const dispatch = useDispatch();
@@ -24,8 +25,7 @@ export const CommentControls = ({ postID, commentID }) => {
         <BsThreeDotsVertical />
       </MenuButton>
       <MenuList fontSize='sm' minW={150}>
-        {/* <PostEditModal postID={postID} /> */}
-        Edit
+        <CommentEditModal postID={postID} commentID={commentID} />
         <MenuItem
           onClick={deletePostHandler}
           fontWeight='600'

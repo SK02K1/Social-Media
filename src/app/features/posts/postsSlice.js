@@ -131,6 +131,24 @@ export const deleteComment = createAsyncThunk(
   }
 );
 
+export const editComment = createAsyncThunk(
+  'posts/editComment',
+  async ({ commentData, postID, commentID, token }, { rejectWithValue }) => {
+    try {
+      const { data, status } = await axios.post(
+        `/api/comments/edit/${postID}/${commentID}`,
+        { commentData },
+        { headers: { authorization: token } }
+      );
+      if (status === 201) {
+        return { comments: data.comments, postID };
+      }
+    } catch (error) {
+      return rejectWithValue({ errorMessage: 'Failed in editing comment' });
+    }
+  }
+);
+
 const initialState = {
   posts: null,
   status: 'idle',
@@ -247,6 +265,22 @@ const postsSlice = createSlice({
       state.error = null;
     });
     builder.addCase(deleteComment.rejected, (state, { payload }) => {
+      state.error = payload.errorMessage;
+      state.status = 'failed';
+    });
+
+    // Edit Comment Cases
+    builder.addCase(editComment.pending, (state) => {
+      state.status = 'pending';
+      state.error = null;
+    });
+    builder.addCase(editComment.fulfilled, (state, { payload }) => {
+      state.posts.find(({ _id }) => _id === payload.postID).comments =
+        payload.comments.reverse();
+      state.status = 'succeeded';
+      state.error = null;
+    });
+    builder.addCase(editComment.rejected, (state, { payload }) => {
       state.error = payload.errorMessage;
       state.status = 'failed';
     });
