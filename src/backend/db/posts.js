@@ -25,7 +25,11 @@ export const posts = [
     comments: [
       {
         _id: uuid(),
-        username: 'shubhamsoni',
+        avatarURL:
+          'https://pbs.twimg.com/media/FJ9PSppagAMgXRa?format=jpg&name=large',
+        username: 'tanviprya',
+        firstName: 'Tanvi',
+        lastName: 'Priya',
         text: 'Interesting',
         votes: {
           upvotedBy: [],
@@ -34,7 +38,11 @@ export const posts = [
       },
       {
         _id: uuid(),
+        avatarURL:
+          'https://pbs.twimg.com/profile_images/1481869646018265088/SgTPHx3S_400x400.jpg',
         username: 'sohamshah',
+        firstName: 'Soham',
+        lastName: 'Shah',
         text: 'Wow!',
         votes: {
           upvotedBy: [],
@@ -60,7 +68,11 @@ export const posts = [
     comments: [
       {
         _id: uuid(),
-        username: 'shubhamsoni',
+        avatarURL:
+          'https://pbs.twimg.com/media/FJ9PSppagAMgXRa?format=jpg&name=large',
+        username: 'tanviprya',
+        firstName: 'Tanvi',
+        lastName: 'Priya',
         text: 'Interesting',
         votes: {
           upvotedBy: [],
@@ -69,7 +81,11 @@ export const posts = [
       },
       {
         _id: uuid(),
+        avatarURL:
+          'https://pbs.twimg.com/profile_images/1481869646018265088/SgTPHx3S_400x400.jpg',
         username: 'sohamshah',
+        firstName: 'Soham',
+        lastName: 'Shah',
         text: 'Wow!',
         votes: {
           upvotedBy: [],

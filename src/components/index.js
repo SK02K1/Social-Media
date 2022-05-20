@@ -12,3 +12,4 @@ export { PostCard } from './PostCard/PostCard';
 export { CreatePost } from './CreatePost/CreatePost';
 export { PostCardControls } from './PostCard/PostCardControls';
 export { AddComment } from './AddComment/AddComment';
+export { CommentsListing } from './CommentsListing/CommentsListing';
