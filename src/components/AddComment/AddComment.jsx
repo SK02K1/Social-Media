@@ -7,6 +7,7 @@ import {
   Input,
   InputGroup,
   InputRightElement,
+  Spinner,
   useColorModeValue,
 } from '@chakra-ui/react';
 import { useState } from 'react';
@@ -17,17 +18,31 @@ export const AddComment = ({ postID }) => {
   const dispatch = useDispatch();
   const [comment, setComment] = useState('');
   const { user, token } = useSelector((store) => store.auth.userData);
+  const [showLoader, setShowloader] = useState(false);
 
-  const { username, avatarURL, firstName, lastname } = user;
+  const { avatarURL, firstName, lastname } = user;
   const fullname = `${firstName} ${lastname}`;
 
   const inputChangeHandler = (e) => {
     setComment(e.target.value);
   };
 
-  const commentSubmitHandler = (e) => {
+  const commentSubmitHandler = async (e) => {
     e.preventDefault();
-    dispatch(addComment({ postID, token, commentData: { text: comment } }));
+    try {
+      setShowloader(true);
+      const res = await dispatch(
+        addComment({ postID, token, commentData: { text: comment } })
+      );
+      const status = res.meta.requestStatus;
+      if (status === 'fulfilled') {
+        setComment('');
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setShowloader(false);
+    }
   };
 
   return (
@@ -41,6 +56,7 @@ export const AddComment = ({ postID }) => {
       borderRadius='base'
     >
       <Avatar name={fullname} src={avatarURL} />
+      {showLoader && <Spinner size='sm' speed='0.2s' my={4} />}
       <FormControl>
         <InputGroup>
           <Input

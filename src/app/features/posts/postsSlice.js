@@ -93,18 +93,20 @@ export const likeDislikePost = createAsyncThunk(
 
 export const addComment = createAsyncThunk(
   'posts/addComment',
-  async ({ postID, token, commentData }) => {
+  async ({ postID, token, commentData }, { rejectWithValue }) => {
     try {
-      const res = await axios.post(
+      const { data, status } = await axios.post(
         `/api/comments/add/${postID}`,
         { commentData },
         {
           headers: { authorization: token },
         }
       );
-      console.log(res);
+      if (status === 201) {
+        return { comments: data.comments, postID };
+      }
     } catch (error) {
-      console.log(error);
+      return rejectWithValue({ errorMessage: 'Failed in adding comment' });
     }
   }
 );
@@ -181,7 +183,7 @@ const postsSlice = createSlice({
       state.status = 'failed';
     });
 
-    // Edit Post Cases
+    // Like/Dislike Post Cases
     builder.addCase(likeDislikePost.pending, (state) => {
       state.status = 'pending';
       state.error = null;
@@ -193,6 +195,22 @@ const postsSlice = createSlice({
       state.error = null;
     });
     builder.addCase(likeDislikePost.rejected, (state, { payload }) => {
+      state.error = payload.errorMessage;
+      state.status = 'failed';
+    });
+
+    // Add Comment Cases
+    builder.addCase(addComment.pending, (state) => {
+      state.status = 'pending';
+      state.error = null;
+    });
+    builder.addCase(addComment.fulfilled, (state, { payload }) => {
+      state.posts.find(({ _id }) => _id === payload.postID).comments =
+        payload.comments.reverse();
+      state.status = 'succeeded';
+      state.error = null;
+    });
+    builder.addCase(addComment.rejected, (state, { payload }) => {
       state.error = payload.errorMessage;
       state.status = 'failed';
     });
