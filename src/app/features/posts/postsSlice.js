@@ -91,6 +91,64 @@ export const likeDislikePost = createAsyncThunk(
   }
 );
 
+export const addComment = createAsyncThunk(
+  'posts/addComment',
+  async ({ postID, token, commentData }, { rejectWithValue }) => {
+    try {
+      const { data, status } = await axios.post(
+        `/api/comments/add/${postID}`,
+        { commentData },
+        {
+          headers: { authorization: token },
+        }
+      );
+      if (status === 201) {
+        return { comments: data.comments, postID };
+      }
+    } catch (error) {
+      return rejectWithValue({ errorMessage: 'Failed in adding comment' });
+    }
+  }
+);
+
+export const deleteComment = createAsyncThunk(
+  'posts/deleteComment',
+  async ({ postID, commentID, token }, { rejectWithValue }) => {
+    try {
+      const { data, status } = await axios.post(
+        `/api/comments/delete/${postID}/${commentID}`,
+        {},
+        { headers: { authorization: token } }
+      );
+      if (status === 201) {
+        return { comments: data.comments, postID };
+      }
+    } catch (error) {
+      return rejectWithValue({
+        errorMessage: 'Failed in deleting the comment',
+      });
+    }
+  }
+);
+
+export const editComment = createAsyncThunk(
+  'posts/editComment',
+  async ({ commentData, postID, commentID, token }, { rejectWithValue }) => {
+    try {
+      const { data, status } = await axios.post(
+        `/api/comments/edit/${postID}/${commentID}`,
+        { commentData },
+        { headers: { authorization: token } }
+      );
+      if (status === 201) {
+        return { comments: data.comments, postID };
+      }
+    } catch (error) {
+      return rejectWithValue({ errorMessage: 'Failed in editing comment' });
+    }
+  }
+);
+
 const initialState = {
   posts: null,
   status: 'idle',
@@ -163,7 +221,7 @@ const postsSlice = createSlice({
       state.status = 'failed';
     });
 
-    // Edit Post Cases
+    // Like/Dislike Post Cases
     builder.addCase(likeDislikePost.pending, (state) => {
       state.status = 'pending';
       state.error = null;
@@ -175,6 +233,54 @@ const postsSlice = createSlice({
       state.error = null;
     });
     builder.addCase(likeDislikePost.rejected, (state, { payload }) => {
+      state.error = payload.errorMessage;
+      state.status = 'failed';
+    });
+
+    // Add Comment Cases
+    builder.addCase(addComment.pending, (state) => {
+      state.status = 'pending';
+      state.error = null;
+    });
+    builder.addCase(addComment.fulfilled, (state, { payload }) => {
+      state.posts.find(({ _id }) => _id === payload.postID).comments =
+        payload.comments.reverse();
+      state.status = 'succeeded';
+      state.error = null;
+    });
+    builder.addCase(addComment.rejected, (state, { payload }) => {
+      state.error = payload.errorMessage;
+      state.status = 'failed';
+    });
+
+    // Delete Comment Cases
+    builder.addCase(deleteComment.pending, (state) => {
+      state.status = 'pending';
+      state.error = null;
+    });
+    builder.addCase(deleteComment.fulfilled, (state, { payload }) => {
+      state.posts.find(({ _id }) => _id === payload.postID).comments =
+        payload.comments.reverse();
+      state.status = 'succeeded';
+      state.error = null;
+    });
+    builder.addCase(deleteComment.rejected, (state, { payload }) => {
+      state.error = payload.errorMessage;
+      state.status = 'failed';
+    });
+
+    // Edit Comment Cases
+    builder.addCase(editComment.pending, (state) => {
+      state.status = 'pending';
+      state.error = null;
+    });
+    builder.addCase(editComment.fulfilled, (state, { payload }) => {
+      state.posts.find(({ _id }) => _id === payload.postID).comments =
+        payload.comments.reverse();
+      state.status = 'succeeded';
+      state.error = null;
+    });
+    builder.addCase(editComment.rejected, (state, { payload }) => {
       state.error = payload.errorMessage;
       state.status = 'failed';
     });

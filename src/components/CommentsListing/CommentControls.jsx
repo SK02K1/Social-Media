@@ -6,25 +6,17 @@ import {
   useColorModeValue,
 } from '@chakra-ui/react';
 
-import { BsThreeDotsVertical } from 'react-icons/bs';
-
 import { useDispatch, useSelector } from 'react-redux';
-import { deletePost, removeFromBookmarks } from 'app/features';
-import { PostEditModal } from './PostEditModal';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { BsThreeDotsVertical } from 'react-icons/bs';
+import { deleteComment } from 'app/features';
+import { CommentEditModal } from './CommentEditModal';
 
-export const PostCardControls = ({ postID }) => {
-  const { pathname } = useLocation();
-  const navigate = useNavigate();
+export const CommentControls = ({ postID, commentID }) => {
   const dispatch = useDispatch();
   const { token } = useSelector((store) => store.auth.userData);
 
   const deletePostHandler = () => {
-    if (pathname.split('/')[1] === 'posts') {
-      navigate('/', { replace: true });
-    }
-    dispatch(removeFromBookmarks({ postID, token }));
-    dispatch(deletePost({ postID, token }));
+    dispatch(deleteComment({ postID, commentID, token }));
   };
 
   return (
@@ -33,7 +25,7 @@ export const PostCardControls = ({ postID }) => {
         <BsThreeDotsVertical />
       </MenuButton>
       <MenuList fontSize='sm' minW={150}>
-        <PostEditModal postID={postID} />
+        <CommentEditModal postID={postID} commentID={commentID} />
         <MenuItem
           onClick={deletePostHandler}
           fontWeight='600'
