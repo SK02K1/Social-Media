@@ -8,23 +8,31 @@ import {
 } from '@chakra-ui/react';
 import { useSelector } from 'react-redux';
 import { getPostByID } from 'utilities';
-import { BsThreeDotsVertical } from 'react-icons/bs';
+
+import { CommentControls } from './CommentControls';
 
 export const CommentsListing = ({ postData }) => {
-  const { _id } = postData;
+  const { _id: postID } = postData;
   const { username: uid } = useSelector((store) => store.auth.userData.user);
   const { posts } = useSelector((store) => store.posts);
-  const { comments } = getPostByID({ posts, postID: _id });
+  const { comments } = getPostByID({ posts, postID });
   const commentCardBg = useColorModeValue('white', 'gray.700');
 
   return (
     <VStack spacing={4} alignItems='flex-start'>
       {comments.map(
-        ({ _id, text, firstName, lastName, avatarURL, username }) => {
+        ({
+          _id: commentID,
+          text,
+          firstName,
+          lastName,
+          avatarURL,
+          username,
+        }) => {
           const fullname = `${firstName} ${lastName}`;
           return (
             <HStack
-              key={_id}
+              key={commentID}
               spacing={4}
               my={4}
               px={4}
@@ -51,7 +59,7 @@ export const CommentsListing = ({ postData }) => {
                   </HStack>
                   {uid === username && (
                     <Box fontSize='lg'>
-                      <BsThreeDotsVertical />
+                      <CommentControls postID={postID} commentID={commentID} />
                     </Box>
                   )}
                 </HStack>

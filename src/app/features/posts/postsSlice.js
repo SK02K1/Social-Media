@@ -111,6 +111,26 @@ export const addComment = createAsyncThunk(
   }
 );
 
+export const deleteComment = createAsyncThunk(
+  'posts/deleteComment',
+  async ({ postID, commentID, token }, { rejectWithValue }) => {
+    try {
+      const { data, status } = await axios.post(
+        `/api/comments/delete/${postID}/${commentID}`,
+        {},
+        { headers: { authorization: token } }
+      );
+      if (status === 201) {
+        return { comments: data.comments, postID };
+      }
+    } catch (error) {
+      return rejectWithValue({
+        errorMessage: 'Failed in deleting the comment',
+      });
+    }
+  }
+);
+
 const initialState = {
   posts: null,
   status: 'idle',
@@ -211,6 +231,22 @@ const postsSlice = createSlice({
       state.error = null;
     });
     builder.addCase(addComment.rejected, (state, { payload }) => {
+      state.error = payload.errorMessage;
+      state.status = 'failed';
+    });
+
+    // Delete Comment Cases
+    builder.addCase(deleteComment.pending, (state) => {
+      state.status = 'pending';
+      state.error = null;
+    });
+    builder.addCase(deleteComment.fulfilled, (state, { payload }) => {
+      state.posts.find(({ _id }) => _id === payload.postID).comments =
+        payload.comments.reverse();
+      state.status = 'succeeded';
+      state.error = null;
+    });
+    builder.addCase(deleteComment.rejected, (state, { payload }) => {
       state.error = payload.errorMessage;
       state.status = 'failed';
     });
