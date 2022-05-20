@@ -86,7 +86,6 @@ export const likeDislikePost = createAsyncThunk(
         };
       }
     } catch (error) {
-      console.log(error);
       return rejectWithValue({ errorMessage: `Failed to ${action}` });
     }
   }
