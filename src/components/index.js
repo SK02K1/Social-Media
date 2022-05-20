@@ -11,3 +11,4 @@ export { SidebarWrapper } from './Layout/SidebarWrapper.jsx';
 export { PostCard } from './PostCard/PostCard';
 export { CreatePost } from './CreatePost/CreatePost';
 export { PostCardControls } from './PostCard/PostCardControls';
+export { AddComment } from './AddComment/AddComment';

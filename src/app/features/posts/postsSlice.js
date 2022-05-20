@@ -91,6 +91,24 @@ export const likeDislikePost = createAsyncThunk(
   }
 );
 
+export const addComment = createAsyncThunk(
+  'posts/addComment',
+  async ({ postID, token, commentData }) => {
+    try {
+      const res = await axios.post(
+        `/api/comments/add/${postID}`,
+        { commentData },
+        {
+          headers: { authorization: token },
+        }
+      );
+      console.log(res);
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 const initialState = {
   posts: null,
   status: 'idle',

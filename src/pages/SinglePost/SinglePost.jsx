@@ -1,5 +1,5 @@
 import { Box, VStack, Spinner, Text } from '@chakra-ui/react';
-import { PostCard } from 'components';
+import { PostCard, AddComment } from 'components';
 import { useAxios } from 'hooks';
 import { useParams } from 'react-router-dom';
 
@@ -21,6 +21,7 @@ export const SinglePost = () => {
         </Text>
       )}
       {postData && <PostCard postData={postData} />}
+      {postData && <AddComment postID={postID} />}
     </Box>
   );
 };

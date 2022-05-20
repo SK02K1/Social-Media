@@ -14,6 +14,7 @@ export {
   deletePost,
   editPost,
   likeDislikePost,
+  addComment,
 } from './posts/postsSlice';
 
 export {
