@@ -19,7 +19,11 @@ import {
 import { Link } from 'react-router-dom';
 import { PostCardControls } from './PostCardControls';
 import { useDispatch, useSelector } from 'react-redux';
-import { isPostAlreadyBookmarked, isPostAlreadyLiked } from 'utilities';
+import {
+  getPostByID,
+  isPostAlreadyBookmarked,
+  isPostAlreadyLiked,
+} from 'utilities';
 import {
   likeDislikePost,
   addToBookmarks,
@@ -28,15 +32,16 @@ import {
 
 export const PostCard = ({ postData }) => {
   const dispatch = useDispatch();
-  const { status } = useSelector((store) => store.posts);
+  const { posts, status } = useSelector((store) => store.posts);
   const { user, token } = useSelector((store) => store.auth.userData);
   const { bookmarks, status: bookmarksStatus } = useSelector(
     (store) => store.bookmarks
   );
   const { username: uid } = user;
+  const { _id } = postData;
+  const currentPost = getPostByID({ posts, postID: _id });
 
   const {
-    _id,
     firstName,
     lastName,
     username,
@@ -45,7 +50,7 @@ export const PostCard = ({ postData }) => {
     avatarURL,
     comments,
     likes,
-  } = postData;
+  } = currentPost;
 
   const { likeCount, likedBy } = likes;
   const commentCount = comments.length;
