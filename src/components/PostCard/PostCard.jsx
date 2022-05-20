@@ -9,30 +9,69 @@ import {
 
 import { MdOutlineModeComment } from 'react-icons/md';
 import { BiShareAlt } from 'react-icons/bi';
-import { BsHeart, BsBookmark } from 'react-icons/bs';
+import {
+  BsHeart,
+  BsBookmark,
+  BsHeartFill,
+  BsBookmarkFill,
+} from 'react-icons/bs';
 
 import { Link } from 'react-router-dom';
 import { PostCardControls } from './PostCardControls';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import {
+  getPostByID,
+  isPostAlreadyBookmarked,
+  isPostAlreadyLiked,
+} from 'utilities';
+import {
+  likeDislikePost,
+  addToBookmarks,
+  removeFromBookmarks,
+} from 'app/features';
 
 export const PostCard = ({ postData }) => {
-  const { username: uid } = useSelector((store) => store.auth.userData.user);
+  const dispatch = useDispatch();
+  const { posts, status } = useSelector((store) => store.posts);
+  const { user, token } = useSelector((store) => store.auth.userData);
+  const { bookmarks, status: bookmarksStatus } = useSelector(
+    (store) => store.bookmarks
+  );
+  const { username: uid } = user;
+  const { _id } = postData;
+  const currentPost = getPostByID({ posts, postID: _id });
+
   const {
-    _id,
     firstName,
     lastName,
     username,
     content,
     img,
     avatarURL,
-    likes,
     comments,
-  } = postData;
-  const { likeCount } = likes;
+    likes,
+  } = currentPost;
+
+  const { likeCount, likedBy } = likes;
   const commentCount = comments.length;
 
   const fullname = `${firstName} ${lastName}`;
   const isMyPost = username === uid;
+  const isPostLiked = isPostAlreadyLiked({ likedBy, uid });
+  const isPostBookmarked = isPostAlreadyBookmarked({ bookmarks, postID: _id });
+
+  const likeDislikeHandler = () => {
+    const action = isPostLiked ? 'dislike' : 'like';
+    dispatch(likeDislikePost({ postID: _id, action, token }));
+  };
+
+  const bookmarkHandler = () => {
+    dispatch(
+      isPostBookmarked
+        ? removeFromBookmarks({ postID: _id, token })
+        : addToBookmarks({ postID: _id, token })
+    );
+  };
 
   return (
     <HStack
@@ -76,8 +115,14 @@ export const PostCard = ({ postData }) => {
           {content}
         </Text>
         <HStack w='full' fontSize='lg' justifyContent='space-between'>
-          <HStack alignItems='center'>
-            <BsHeart />
+          <HStack
+            as='button'
+            onClick={likeDislikeHandler}
+            alignItems='center'
+            disabled={status === 'pending'}
+            _disabled={{ cursor: 'not-allowed' }}
+          >
+            {isPostLiked ? <BsHeartFill /> : <BsHeart />}
             <Text fontSize='sm'>{likeCount}</Text>
           </HStack>
           <HStack as={Link} to={`/posts/${_id}`} alignItems='center'>
@@ -85,7 +130,15 @@ export const PostCard = ({ postData }) => {
             <Text fontSize='sm'>{commentCount}</Text>
           </HStack>
           <BiShareAlt />
-          <BsBookmark />
+          <HStack
+            onClick={bookmarkHandler}
+            as='button'
+            alignItems='center'
+            _disabled={{ cursor: 'not-allowed' }}
+            disabled={bookmarksStatus === 'pending'}
+          >
+            {isPostBookmarked ? <BsBookmarkFill /> : <BsBookmark />}
+          </HStack>
         </HStack>
       </VStack>
     </HStack>

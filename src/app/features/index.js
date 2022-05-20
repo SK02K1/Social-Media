@@ -13,4 +13,11 @@ export {
   createNewPost,
   deletePost,
   editPost,
+  likeDislikePost,
 } from './posts/postsSlice';
+
+export {
+  getAllBookmarks,
+  addToBookmarks,
+  removeFromBookmarks,
+} from './bookmarks/bookmarksSlice';
