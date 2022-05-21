@@ -4,11 +4,11 @@ import {
   useColorModeValue,
   VStack,
   Link,
-  Button,
 } from '@chakra-ui/react';
+import { useSelector } from 'react-redux';
 import { LinkIcon } from '@chakra-ui/icons';
 import { UserAvatar } from 'components';
-import { useSelector } from 'react-redux';
+import { EditProfile } from './EditProfileModal';
 
 export const ProfileCard = ({ userData }) => {
   const {
@@ -28,7 +28,7 @@ export const ProfileCard = ({ userData }) => {
     >
       <HStack w='full' justifyContent='space-between' alignItems='flex-start'>
         <UserAvatar userData={userData} size='xl' />
-        {username === uid && <Button colorScheme='blue'>Edit</Button>}
+        {username === uid && <EditProfile userData={userData} />}
       </HStack>
       <VStack spacing={-1} alignItems='flex-start'>
         <Text fontSize='lg' fontWeight='600'>
