@@ -1,12 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import {
-  Box,
-  Button,
-  HStack,
-  Text,
-  useColorModeValue,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, HStack, Text, useColorModeValue, VStack } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { handleLogout } from 'app/features';
 

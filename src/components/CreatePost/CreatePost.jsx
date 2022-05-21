@@ -1,14 +1,10 @@
 import {
-  FormLabel,
   HStack,
-  Input,
   Textarea,
   useColorModeValue,
   VStack,
   Button,
 } from '@chakra-ui/react';
-
-import { BsImageFill } from 'react-icons/bs';
 
 import { createNewPost } from 'app/features';
 import { useDispatch, useSelector } from 'react-redux';
