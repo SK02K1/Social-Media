@@ -3,11 +3,14 @@ import { Box, Spinner, Text, VStack } from '@chakra-ui/react';
 import { ProfileCard } from 'components';
 import { useAxios } from 'hooks';
 import { useParams } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 export const SingleUser = () => {
+  const { user } = useSelector((store) => store.auth.userData);
+  const { username: uid } = user;
   const { username } = useParams();
   const { data, status, error } = useAxios(`/api/users/${username}`);
-  const userData = data?.user;
+  const userData = uid === username ? user : data?.user;
 
   return (
     <Box>

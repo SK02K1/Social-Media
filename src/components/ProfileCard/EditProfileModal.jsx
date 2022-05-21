@@ -1,9 +1,7 @@
 import { useState } from 'react';
 import { EditIcon } from '@chakra-ui/icons';
-import { AiFillCamera } from 'react-icons/ai';
+
 import {
-  Avatar,
-  Box,
   Button,
   FormLabel,
   GridItem,
@@ -30,32 +28,16 @@ export const EditProfile = ({ userData }) => {
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [formData, setFormData] = useState(userData);
-  const { firstName, lastName, bio, siteLink, avatarURL } = formData;
-  const [file, setFile] = useState(null);
-  const [preview, setPreview] = useState(null);
-  const [showLoader, setShowLoader] = useState(false);
+  const { firstName, lastName, bio, siteLink } = formData;
 
-  const previewFile = (file) => {
-    const reader = new FileReader();
-    reader.readAsDataURL(file);
-    reader.onloadend = () => {
-      setPreview(reader.result);
-    };
-  };
+  const [showLoader, setShowLoader] = useState(false);
 
   const fieldChangeHandler = (e) => {
     setFormData(inputChangeHandler({ e, formData }));
   };
 
-  const fileChangeHandler = (e) => {
-    const selectedFile = e.target.files[0];
-    setFile(selectedFile);
-    previewFile(selectedFile);
-  };
-
   const submitHandler = async (e) => {
     e.preventDefault();
-    // console.log({ file });
     setShowLoader(true);
     try {
       await dispatch(editUserData({ token, userData: formData }));
@@ -90,24 +72,6 @@ export const EditProfile = ({ userData }) => {
           <ModalCloseButton />
           <ModalBody pb={6}>
             <SimpleGrid columns={2} spacing={4}>
-              <GridItem colSpan={1}>
-                <FormLabel cursor='pointer' htmlFor='avatarURL'>
-                  <Avatar pos='relative' src={preview || avatarURL} size='lg'>
-                    <Box color='teal' pos='absolute' top={0} right={-2}>
-                      <AiFillCamera />
-                    </Box>
-                  </Avatar>
-                </FormLabel>
-              </GridItem>
-              <GridItem colSpan={1}>
-                <Input
-                  onChange={fileChangeHandler}
-                  name='avatarURL'
-                  id='avatarURL'
-                  type='file'
-                  display='none'
-                />
-              </GridItem>
               <GridItem colSpan={1}>
                 <FormLabel htmlFor='firstName'>First Name</FormLabel>
                 <Input
