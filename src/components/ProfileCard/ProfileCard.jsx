@@ -11,7 +11,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { LinkIcon } from '@chakra-ui/icons';
 import { UserAvatar } from 'components';
 import { EditProfile } from './EditProfileModal';
-import { followUser } from 'app/features';
+import { followUser, unfollowUser } from 'app/features';
 import { useState } from 'react';
 
 export const ProfileCard = ({ userData }) => {
@@ -46,6 +46,17 @@ export const ProfileCard = ({ userData }) => {
     }
   };
 
+  const handleUnfollow = async () => {
+    setShowLoader(true);
+    try {
+      await dispatch(unfollowUser({ token, userID: _id }));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setShowLoader(false);
+    }
+  };
+
   return (
     <VStack
       spacing={2}
@@ -59,7 +70,7 @@ export const ProfileCard = ({ userData }) => {
         <UserAvatar userData={userData} size='xl' />
         {!(username === uid) &&
           (alreadyFollowed ? (
-            <Button colorScheme='red'>
+            <Button onClick={handleUnfollow} colorScheme='red'>
               {showLoader ? <Spinner speed='0.2s' size='sm' /> : 'Unfollow'}
             </Button>
           ) : (

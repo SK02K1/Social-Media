@@ -8,6 +8,7 @@ export {
   selectUserData,
   editUserData,
   followUser,
+  unfollowUser,
 } from './authentication/authSlice';
 
 export {
