@@ -1,7 +1,10 @@
 import { useState } from 'react';
 import { EditIcon } from '@chakra-ui/icons';
+import { AiFillCamera } from 'react-icons/ai';
 
 import {
+  Avatar,
+  Box,
   Button,
   FormLabel,
   GridItem,
@@ -28,24 +31,66 @@ export const EditProfile = ({ userData }) => {
   const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [formData, setFormData] = useState(userData);
-  const { firstName, lastName, bio, siteLink } = formData;
+  const { firstName, lastName, bio, siteLink, avatarURL } = formData;
 
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
   const [showLoader, setShowLoader] = useState(false);
+
+  const previewFile = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setPreview(reader.result);
+    };
+  };
 
   const fieldChangeHandler = (e) => {
     setFormData(inputChangeHandler({ e, formData }));
   };
 
+  const fileChangeHandler = (e) => {
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
+    previewFile(selectedFile);
+  };
+
   const submitHandler = async (e) => {
     e.preventDefault();
-    setShowLoader(true);
-    try {
-      await dispatch(editUserData({ token, userData: formData }));
-      onClose();
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setShowLoader(false);
+    if (file) {
+      setShowLoader(true);
+      if (Math.floor(file / 1000000) > 3) {
+        console.log('Image file size should be less than 3MB', 'error');
+        return;
+      }
+      const url = 'https://api.cloudinary.com/v1_1/dx0fxfuix/image/upload';
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('upload_preset', 'vixdj9rv');
+
+      const requestOptions = {
+        method: 'POST',
+        body: formData,
+      };
+
+      fetch(url, requestOptions)
+        .then((res) => {
+          return res.json();
+        })
+        .then((data) => {
+          return dispatch(
+            editUserData({
+              token,
+              userData: { ...formData, avatarURL: data.url },
+            })
+          );
+        })
+        .then(() => {
+          setShowLoader(false);
+          onClose();
+        })
+        .catch((err) => console.log(err));
     }
   };
 
@@ -72,6 +117,24 @@ export const EditProfile = ({ userData }) => {
           <ModalCloseButton />
           <ModalBody pb={6}>
             <SimpleGrid columns={2} spacing={4}>
+              <GridItem colSpan={1}>
+                <FormLabel cursor='pointer' htmlFor='avatarURL'>
+                  <Avatar pos='relative' src={preview || avatarURL} size='lg'>
+                    <Box color='teal' pos='absolute' top={0} right={-2}>
+                      <AiFillCamera />
+                    </Box>
+                  </Avatar>
+                </FormLabel>
+              </GridItem>
+              <GridItem colSpan={1}>
+                <Input
+                  onChange={fileChangeHandler}
+                  name='avatarURL'
+                  id='avatarURL'
+                  type='file'
+                  display='none'
+                />
+              </GridItem>
               <GridItem colSpan={1}>
                 <FormLabel htmlFor='firstName'>First Name</FormLabel>
                 <Input
