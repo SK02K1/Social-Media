@@ -14,7 +14,7 @@ export const users = [
     password: '12345678',
     avatarURL: 'https://avatars.githubusercontent.com/u/55895224?v=4',
     bio: 'Learning fullstack development',
-    siteLink: 'peerlist.io/sk02k1',
+    siteLink: 'https://peerlist.io/sk02k1',
     createdAt: formatDate(),
     updatedAt: formatDate(),
   },
@@ -40,7 +40,8 @@ export const users = [
     avatarURL:
       'https://pbs.twimg.com/profile_images/1085823173419880448/oDNqP1T3_400x400.jpg',
     bio: 'Curates JS interview qs on IG 👇👇',
-    siteLink: 'bit.ly/js-interviews',
+    siteLink:
+      'https://www.instagram.com/javascript_interviews/?igshid=5cpnfv22gmji',
     createdAt: formatDate(),
     updatedAt: formatDate(),
   },
@@ -66,7 +67,7 @@ export const users = [
     avatarURL:
       'https://pbs.twimg.com/media/FJ9PSppagAMgXRa?format=jpg&name=large',
     bio: 'Lawyer ➡️ Entrepreneur | Building India’s  #1 CBCs @neogcamp | Tweets about startups and journey',
-    siteLink: 'neog.camp',
+    siteLink: 'https://neog.camp/',
     createdAt: formatDate(),
     updatedAt: formatDate(),
   },
