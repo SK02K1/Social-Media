@@ -89,9 +89,6 @@ export const LeftSideBar = () => {
           {sidebarLinksListing}
         </VStack>
         <VStack spacing={6} alignItems='flex-start'>
-          <Button colorScheme='blue' size='md' w='full'>
-            Create new post
-          </Button>
           <Button
             onClick={() => dispatch(handleLogout())}
             w='full'

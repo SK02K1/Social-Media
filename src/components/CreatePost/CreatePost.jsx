@@ -67,12 +67,8 @@ export const CreatePost = () => {
           justifyContent='space-between'
           alignItems='center'
         >
-          <FormLabel cursor='pointer' fontSize='xl'>
-            <BsImageFill />
-            <Input type='file' display='none' />
-          </FormLabel>
-
           <Button
+            ml='auto'
             onClick={postBtnHandler}
             colorScheme='blue'
             size='sm'
