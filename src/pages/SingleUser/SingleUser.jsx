@@ -4,6 +4,7 @@ import { ProfileCard } from 'components';
 import { useAxios } from 'hooks';
 import { useParams } from 'react-router-dom';
 import { useSelector } from 'react-redux';
+import { PostsListing } from './PostsListing';
 
 export const SingleUser = () => {
   const { user } = useSelector((store) => store.auth.userData);
@@ -11,6 +12,7 @@ export const SingleUser = () => {
   const { username } = useParams();
   const { data, status, error } = useAxios(`/api/users/${username}`);
   const userData = uid === username ? user : data?.user;
+  const { data: posts } = useAxios(`/api/posts/user/${username}`);
 
   return (
     <Box>
@@ -25,6 +27,7 @@ export const SingleUser = () => {
           {error}
         </Text>
       )}
+      {posts?.posts && <PostsListing posts={posts?.posts} />}
     </Box>
   );
 };
