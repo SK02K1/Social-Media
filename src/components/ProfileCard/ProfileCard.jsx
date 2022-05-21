@@ -14,7 +14,8 @@ export const ProfileCard = ({ userData }) => {
   const {
     user: { username: uid },
   } = useSelector((store) => store.auth.userData);
-  const { firstName, lastName, username, bio, siteLink } = userData;
+  const { firstName, lastName, username, bio, siteLink, followers, following } =
+    userData;
   const fullname = `${firstName} ${lastName}`;
 
   return (
@@ -38,6 +39,10 @@ export const ProfileCard = ({ userData }) => {
           @{username}
         </Text>
       </VStack>
+      <HStack>
+        <Text>Followers({followers.length})</Text>
+        <Text>Following({following.length})</Text>
+      </HStack>
       {bio && <Text>{bio}</Text>}
       {siteLink && (
         <HStack>
