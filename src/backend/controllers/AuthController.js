@@ -1,7 +1,7 @@
-import { v4 as uuid } from "uuid";
-import { Response } from "miragejs";
-import { formatDate } from "../utils/authUtils";
-const sign = require("jwt-encode");
+import { v4 as uuid } from 'uuid';
+import { Response } from 'miragejs';
+import { formatDate } from '../utils/authUtils';
+const sign = require('jwt-encode');
 
 /**
  * All the routes related to Auth are present here.
@@ -24,7 +24,7 @@ export const signupHandler = function (schema, request) {
         422,
         {},
         {
-          errors: ["Unprocessable Entity. Username Already Exists."],
+          errors: ['Unprocessable Entity. Username Already Exists.'],
         }
       );
     }
@@ -37,6 +37,9 @@ export const signupHandler = function (schema, request) {
       username,
       password,
       ...rest,
+      avatarURL: '',
+      siteLink: '',
+      bio: '',
       followers: [],
       following: [],
       bookmarks: [],
@@ -74,7 +77,7 @@ export const loginHandler = function (schema, request) {
         {},
         {
           errors: [
-            "The username you entered is not Registered. Not Found error",
+            'The username you entered is not Registered. Not Found error',
           ],
         }
       );
@@ -91,7 +94,7 @@ export const loginHandler = function (schema, request) {
       {},
       {
         errors: [
-          "The credentials you entered are invalid. Unauthorized access error.",
+          'The credentials you entered are invalid. Unauthorized access error.',
         ],
       }
     );

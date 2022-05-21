@@ -1,11 +1,5 @@
-import {
-  Avatar,
-  Box,
-  HStack,
-  Text,
-  useColorModeValue,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, HStack, Text, useColorModeValue, VStack } from '@chakra-ui/react';
+import { UserAvatar } from 'components';
 import { useSelector } from 'react-redux';
 import { getPostByID } from 'utilities';
 
@@ -44,7 +38,10 @@ export const CommentsListing = ({ postData }) => {
               boxShadow='xl'
               w='full'
             >
-              <Avatar size='md' name={fullname} src={avatarURL} />
+              <UserAvatar
+                size='md'
+                userData={{ firstName, lastName, username, avatarURL }}
+              />
               <VStack width='full' h='auto' alignItems='flex-start' spacing={6}>
                 <HStack w='full' justifyContent='space-between'>
                   <HStack spacing={2}>
