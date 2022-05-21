@@ -77,7 +77,7 @@ export const editUserData = createAsyncThunk(
         { headers: { authorization: token } }
       );
       if (status === 201) {
-        saveUserDataInLocalStorage(data.user);
+        saveUserDataInLocalStorage({ user: data.user, token });
         return { user: data.user };
       }
     } catch (error) {
@@ -98,7 +98,7 @@ export const followUser = createAsyncThunk(
         }
       );
       if (status === 200) {
-        saveUserDataInLocalStorage(data.user);
+        saveUserDataInLocalStorage({ user: data.user, token });
         return { user: data.user };
       }
     } catch (error) {
@@ -119,7 +119,7 @@ export const unfollowUser = createAsyncThunk(
         }
       );
       if (status === 200) {
-        saveUserDataInLocalStorage(data.user);
+        saveUserDataInLocalStorage({ user: data.user, token });
         return { user: data.user };
       }
     } catch (error) {
