@@ -1,12 +1,5 @@
 import { NavLink } from 'react-router-dom';
-import {
-  Box,
-  Button,
-  HStack,
-  Text,
-  useColorModeValue,
-  VStack,
-} from '@chakra-ui/react';
+import { Box, HStack, Text, useColorModeValue, VStack } from '@chakra-ui/react';
 import { useDispatch } from 'react-redux';
 import { handleLogout } from 'app/features';
 
@@ -58,14 +51,6 @@ export const BottomBar = () => {
             <Text fontSize='xs'>Bookmarks</Text>
           </VStack>
         </NavLinkWrapper>
-        <VStack>
-          <Button colorScheme='blue' size='sm' borderRadius={50}>
-            <Box as='span' fontSize='3xl' className='material-symbols-rounded'>
-              add
-            </Box>
-          </Button>
-          <Text fontSize='xs'>Post</Text>
-        </VStack>
         <NavLinkWrapper to='explore'>
           <VStack>
             <Box as='span' fontSize='3xl' className='material-symbols-rounded'>

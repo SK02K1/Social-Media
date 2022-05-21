@@ -1,33 +1,25 @@
 import {
-  Avatar,
-  FormLabel,
   HStack,
-  Input,
   Textarea,
   useColorModeValue,
   VStack,
   Button,
 } from '@chakra-ui/react';
 
-import { BsImageFill } from 'react-icons/bs';
-
 import { createNewPost } from 'app/features';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useState } from 'react';
+import { UserAvatar } from 'components';
 
 export const CreatePost = () => {
   const [content, setContent] = useState('');
   const dispatch = useDispatch();
 
-  const {
-    token,
-    user: { firstName, lastName, avatarURL },
-  } = useSelector((store) => store.auth.userData);
+  const { token, user } = useSelector((store) => store.auth.userData);
 
   const { status } = useSelector((store) => store.posts);
 
   const isEmpty = !Boolean(content.length);
-  const fullname = `${firstName} ${lastName}`;
 
   const inputChangeHandler = (e) => setContent(e.target.value);
 
@@ -53,7 +45,7 @@ export const CreatePost = () => {
       borderRadius='lg'
       boxShadow='xl'
     >
-      <Avatar size='md' name={fullname} src={avatarURL} />
+      <UserAvatar userData={user} size='md' />
       <VStack width='full' h='auto' alignItems='flex-start' spacing={6}>
         <Textarea
           onChange={inputChangeHandler}
@@ -71,12 +63,8 @@ export const CreatePost = () => {
           justifyContent='space-between'
           alignItems='center'
         >
-          <FormLabel cursor='pointer' fontSize='xl'>
-            <BsImageFill />
-            <Input type='file' display='none' />
-          </FormLabel>
-
           <Button
+            ml='auto'
             onClick={postBtnHandler}
             colorScheme='blue'
             size='sm'

@@ -1,11 +1,4 @@
-import {
-  Avatar,
-  Box,
-  HStack,
-  VStack,
-  Text,
-  useColorModeValue,
-} from '@chakra-ui/react';
+import { Box, HStack, VStack, Text, useColorModeValue } from '@chakra-ui/react';
 
 import { MdOutlineModeComment } from 'react-icons/md';
 import { BiShareAlt } from 'react-icons/bi';
@@ -29,6 +22,7 @@ import {
   addToBookmarks,
   removeFromBookmarks,
 } from 'app/features';
+import { UserAvatar } from 'components';
 
 export const PostCard = ({ postData }) => {
   const dispatch = useDispatch();
@@ -55,10 +49,12 @@ export const PostCard = ({ postData }) => {
   const { likeCount, likedBy } = likes;
   const commentCount = comments.length;
 
-  const fullname = `${firstName} ${lastName}`;
   const isMyPost = username === uid;
   const isPostLiked = isPostAlreadyLiked({ likedBy, uid });
   const isPostBookmarked = isPostAlreadyBookmarked({ bookmarks, postID: _id });
+  const fullname = isMyPost
+    ? `${user.firstName} ${user.lastName}`
+    : `${firstName} ${lastName}`;
 
   const likeDislikeHandler = () => {
     const action = isPostLiked ? 'dislike' : 'like';
@@ -85,7 +81,19 @@ export const PostCard = ({ postData }) => {
       borderRadius='lg'
       boxShadow='xl'
     >
-      <Avatar size='md' name={fullname} src={avatarURL} />
+      <UserAvatar
+        size='md'
+        userData={
+          isMyPost
+            ? {
+                avatarURL: user.avatarURL,
+                firstName: user.firstName,
+                lastName: user.lastName,
+                username,
+              }
+            : { avatarURL, firstName, lastName, username }
+        }
+      />
       <VStack width='full' h='auto' alignItems='flex-start' spacing={6}>
         <HStack w='full' justifyContent='space-between'>
           <HStack spacing={2}>

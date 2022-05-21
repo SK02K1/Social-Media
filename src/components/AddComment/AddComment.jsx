@@ -1,6 +1,5 @@
 import { AddIcon } from '@chakra-ui/icons';
 import {
-  Avatar,
   Button,
   FormControl,
   HStack,
@@ -13,6 +12,7 @@ import {
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { addComment } from 'app/features';
+import { UserAvatar } from 'components';
 
 export const AddComment = ({ postID }) => {
   const dispatch = useDispatch();
@@ -20,8 +20,7 @@ export const AddComment = ({ postID }) => {
   const { user, token } = useSelector((store) => store.auth.userData);
   const [showLoader, setShowloader] = useState(false);
 
-  const { avatarURL, firstName, lastname } = user;
-  const fullname = `${firstName} ${lastname}`;
+  const { username, avatarURL, firstName, lastname } = user;
 
   const inputChangeHandler = (e) => {
     setComment(e.target.value);
@@ -55,7 +54,10 @@ export const AddComment = ({ postID }) => {
       boxShadow='md'
       borderRadius='base'
     >
-      <Avatar name={fullname} src={avatarURL} />
+      <UserAvatar
+        size='md'
+        userData={{ firstName, lastname, username, avatarURL }}
+      />
       {showLoader && <Spinner size='sm' speed='0.2s' my={4} />}
       <FormControl>
         <InputGroup>
