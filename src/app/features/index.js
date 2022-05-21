@@ -7,6 +7,7 @@ export {
   resetErrorMessage,
   selectUserData,
   editUserData,
+  followUser,
 } from './authentication/authSlice';
 
 export {

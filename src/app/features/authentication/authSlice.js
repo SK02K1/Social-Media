@@ -86,6 +86,27 @@ export const editUserData = createAsyncThunk(
   }
 );
 
+export const followUser = createAsyncThunk(
+  'auth/followUser',
+  async ({ userID, token }) => {
+    try {
+      const { data, status } = await axios.post(
+        `/api/users/follow/${userID}`,
+        {},
+        {
+          headers: { authorization: token },
+        }
+      );
+      if (status === 200) {
+        saveUserDataInLocalStorage(data.user);
+        return { user: data.user };
+      }
+    } catch (error) {
+      console.log(error);
+    }
+  }
+);
+
 const initialState = {
   userData: getUserDataFromLocalStorage() ?? {},
   status: 'idle',
@@ -152,6 +173,23 @@ const authSlice = createSlice({
     });
 
     builder.addCase(editUserData.rejected, (state, { payload }) => {
+      state.status = 'failed';
+      state.error = 'Failed to update your profile';
+    });
+
+    // Edit User Data Cases
+    builder.addCase(followUser.pending, (state) => {
+      state.status = 'pending';
+      state.error = null;
+    });
+
+    builder.addCase(followUser.fulfilled, (state, { payload }) => {
+      state.status = 'succeed';
+      state.error = null;
+      state.userData.user = payload.user;
+    });
+
+    builder.addCase(followUser.rejected, (state, { payload }) => {
       state.status = 'failed';
       state.error = 'Failed to update your profile';
     });

@@ -4,19 +4,47 @@ import {
   useColorModeValue,
   VStack,
   Link,
+  Button,
+  Spinner,
 } from '@chakra-ui/react';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { LinkIcon } from '@chakra-ui/icons';
 import { UserAvatar } from 'components';
 import { EditProfile } from './EditProfileModal';
+import { followUser } from 'app/features';
+import { useState } from 'react';
 
 export const ProfileCard = ({ userData }) => {
+  const { user, token } = useSelector((store) => store.auth.userData);
+  const { username: uid } = user;
+  const dispatch = useDispatch();
+  const [showLoader, setShowLoader] = useState(false);
   const {
-    user: { username: uid },
-  } = useSelector((store) => store.auth.userData);
-  const { firstName, lastName, username, bio, siteLink, followers, following } =
-    userData;
+    _id,
+    firstName,
+    lastName,
+    username,
+    bio,
+    siteLink,
+    followers,
+    following,
+  } = userData;
   const fullname = `${firstName} ${lastName}`;
+
+  const alreadyFollowed = Boolean(
+    user.following.find(({ _id: userID }) => userID === _id)
+  );
+
+  const handleFollow = async () => {
+    setShowLoader(true);
+    try {
+      await dispatch(followUser({ token, userID: _id }));
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setShowLoader(false);
+    }
+  };
 
   return (
     <VStack
@@ -29,6 +57,16 @@ export const ProfileCard = ({ userData }) => {
     >
       <HStack w='full' justifyContent='space-between' alignItems='flex-start'>
         <UserAvatar userData={userData} size='xl' />
+        {!(username === uid) &&
+          (alreadyFollowed ? (
+            <Button colorScheme='red'>
+              {showLoader ? <Spinner speed='0.2s' size='sm' /> : 'Unfollow'}
+            </Button>
+          ) : (
+            <Button onClick={handleFollow} colorScheme='blue'>
+              {showLoader ? <Spinner speed='0.2s' size='sm' /> : 'Follow'}
+            </Button>
+          ))}
         {username === uid && <EditProfile userData={userData} />}
       </HStack>
       <VStack spacing={-1} alignItems='flex-start'>
