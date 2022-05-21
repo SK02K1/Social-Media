@@ -16,7 +16,7 @@ export const ProfileCard = ({ userData }) => {
   } = useSelector((store) => store.auth.userData);
   const { firstName, lastName, username, bio, siteLink } = userData;
   const fullname = `${firstName} ${lastName}`;
-  console.log(uid);
+
   return (
     <VStack
       spacing={2}

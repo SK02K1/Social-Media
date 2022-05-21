@@ -1,5 +1,9 @@
+import { useState } from 'react';
 import { EditIcon } from '@chakra-ui/icons';
+import { AiFillCamera } from 'react-icons/ai';
 import {
+  Avatar,
+  Box,
   Button,
   FormLabel,
   GridItem,
@@ -13,15 +17,55 @@ import {
   ModalHeader,
   ModalOverlay,
   SimpleGrid,
+  Spinner,
   Text,
   useDisclosure,
 } from '@chakra-ui/react';
-import { useState } from 'react';
+import { inputChangeHandler } from 'utilities';
+import { useDispatch, useSelector } from 'react-redux';
+import { editUserData } from 'app/features';
 
 export const EditProfile = ({ userData }) => {
+  const { token } = useSelector((store) => store.auth.userData);
+  const dispatch = useDispatch();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [formData, setFormData] = useState(userData);
-  const { firstName, lastName, bio, siteLink } = formData;
+  const { firstName, lastName, bio, siteLink, avatarURL } = formData;
+  const [file, setFile] = useState(null);
+  const [preview, setPreview] = useState(null);
+  const [showLoader, setShowLoader] = useState(false);
+
+  const previewFile = (file) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onloadend = () => {
+      setPreview(reader.result);
+    };
+  };
+
+  const fieldChangeHandler = (e) => {
+    setFormData(inputChangeHandler({ e, formData }));
+  };
+
+  const fileChangeHandler = (e) => {
+    const selectedFile = e.target.files[0];
+    setFile(selectedFile);
+    previewFile(selectedFile);
+  };
+
+  const submitHandler = async (e) => {
+    e.preventDefault();
+    // console.log({ file });
+    setShowLoader(true);
+    try {
+      await dispatch(editUserData({ token, userData: formData }));
+      onClose();
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setShowLoader(false);
+    }
+  };
 
   return (
     <>
@@ -36,7 +80,7 @@ export const EditProfile = ({ userData }) => {
         isCentered
       >
         <ModalOverlay />
-        <ModalContent>
+        <ModalContent onSubmit={submitHandler} as='form'>
           <ModalHeader>
             <HStack>
               <Text>Edit your profile</Text>
@@ -44,29 +88,76 @@ export const EditProfile = ({ userData }) => {
             </HStack>
           </ModalHeader>
           <ModalCloseButton />
-          <ModalBody as='form' pb={6}>
+          <ModalBody pb={6}>
             <SimpleGrid columns={2} spacing={4}>
-              <GridItem colSpan={2}>
-                <FormLabel cursor='pointer'>
-                  Change Profile Avatar
-                  <Input type='file' display='none' />
+              <GridItem colSpan={1}>
+                <FormLabel cursor='pointer' htmlFor='avatarURL'>
+                  <Avatar pos='relative' src={preview || avatarURL} size='lg'>
+                    <Box color='teal' pos='absolute' top={0} right={-2}>
+                      <AiFillCamera />
+                    </Box>
+                  </Avatar>
                 </FormLabel>
               </GridItem>
               <GridItem colSpan={1}>
-                <Input value={firstName} />
+                <Input
+                  onChange={fileChangeHandler}
+                  name='avatarURL'
+                  id='avatarURL'
+                  type='file'
+                  display='none'
+                />
               </GridItem>
               <GridItem colSpan={1}>
-                <Input value={lastName} />
+                <FormLabel htmlFor='firstName'>First Name</FormLabel>
+                <Input
+                  onChange={fieldChangeHandler}
+                  id='firstName'
+                  name='firstName'
+                  value={firstName}
+                  required
+                />
+              </GridItem>
+              <GridItem colSpan={1}>
+                <FormLabel htmlFor='lastName'>Last Name</FormLabel>
+                <Input
+                  onChange={fieldChangeHandler}
+                  name='lastName'
+                  id='lastName'
+                  value={lastName}
+                  required
+                />
               </GridItem>
               <GridItem colSpan={2}>
-                <Input value={bio} />
+                <FormLabel htmlFor='bio'>Bio</FormLabel>
+                <Input
+                  onChange={fieldChangeHandler}
+                  id='bio'
+                  name='bio'
+                  value={bio}
+                />
+              </GridItem>
+              <GridItem colSpan={2}>
+                <FormLabel htmlFor='siteLink'>Website</FormLabel>
+                <Input
+                  onChange={fieldChangeHandler}
+                  type='url'
+                  id='siteLink'
+                  name='siteLink'
+                  value={siteLink}
+                />
               </GridItem>
             </SimpleGrid>
           </ModalBody>
 
           <ModalFooter>
-            <Button colorScheme='blue' mr={3}>
-              Save
+            <Button
+              type='submit'
+              colorScheme='blue'
+              mr={3}
+              disabled={showLoader}
+            >
+              {showLoader ? <Spinner size='md' speed='0.2s' /> : 'Save'}
             </Button>
             <Button onClick={onClose}>Cancel</Button>
           </ModalFooter>

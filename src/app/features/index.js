@@ -6,6 +6,7 @@ export {
   handleLogout,
   resetErrorMessage,
   selectUserData,
+  editUserData,
 } from './authentication/authSlice';
 
 export {
