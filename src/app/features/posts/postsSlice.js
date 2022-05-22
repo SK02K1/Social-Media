@@ -54,18 +54,21 @@ export const deletePost = createAsyncThunk(
 export const editPost = createAsyncThunk(
   'posts/editPost',
   async ({ postData, token }, { rejectWithValue }) => {
-    const { _id: postID } = postData;
     try {
       const { data, status } = await axios.post(
-        `/api/posts/edit/${postID}`,
+        `/api/posts/edit/${postData._id}`,
         { postData },
         { headers: { authorization: token } }
       );
       if (status === 201) {
-        return { editedPost: data.posts.find(({ _id }) => _id === postID) };
+        return {
+          posts: data?.posts,
+          message: `Post edited successfully`,
+        };
       }
     } catch (error) {
-      return rejectWithValue({ errorMessage: 'Failed in editing the post' });
+      console.error(error);
+      return rejectWithValue({ message: 'Failed in editing the post' });
     }
   }
 );
@@ -205,17 +208,14 @@ const postsSlice = createSlice({
 
     // Edit Post Cases
     builder.addCase(editPost.pending, (state) => {
-      state.status = 'pending';
       state.error = null;
     });
     builder.addCase(editPost.fulfilled, (state, { payload }) => {
-      state.posts.find(({ _id }) => _id === payload.editedPost._id).content =
-        payload.editedPost.content;
+      state.posts = payload.posts;
       state.status = 'succeeded';
       state.error = null;
     });
-    builder.addCase(editPost.rejected, (state, { payload }) => {
-      state.error = payload.errorMessage;
+    builder.addCase(editPost.rejected, (state) => {
       state.status = 'failed';
     });
 

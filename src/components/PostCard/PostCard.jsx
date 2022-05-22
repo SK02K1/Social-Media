@@ -109,7 +109,7 @@ export const PostCard = ({ postData }) => {
           </HStack>
           {isMyPost && (
             <Box fontSize='lg'>
-              <PostCardControls postID={_id} />
+              <PostCardControls postData={postData} />
             </Box>
           )}
         </HStack>

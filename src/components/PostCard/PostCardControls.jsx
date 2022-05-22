@@ -14,7 +14,8 @@ import {
 
 import { BsThreeDotsVertical } from 'react-icons/bs';
 
-export const PostCardControls = ({ postID }) => {
+export const PostCardControls = ({ postData }) => {
+  const { _id: postID } = postData;
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const chakraToast = useChakraToast();
@@ -40,7 +41,7 @@ export const PostCardControls = ({ postID }) => {
         <BsThreeDotsVertical />
       </MenuButton>
       <MenuList fontSize='sm' minW={150}>
-        <PostEditModal postID={postID} />
+        <PostEditModal postData={postData} />
         <MenuItem
           onClick={deletePostHandler}
           fontWeight='600'
