@@ -11,10 +11,10 @@ export const Home = () => {
   const { posts, status, error } = useSelector((store) => store.posts);
 
   useEffect(() => {
-    if (!posts) {
+    (async () => {
       dispatch(getAllPosts());
-    }
-  }, [posts, dispatch]);
+    })();
+  }, [dispatch]);
 
   useEffect(() => {
     if (!bookmarks) {
@@ -25,7 +25,8 @@ export const Home = () => {
   return (
     <Box>
       <CreatePost />
-      {status === 'pending' && !posts && (
+
+      {status === 'pending' && (
         <VStack w='full' my={8}>
           <Spinner speed='0.2s' size='sm' />
         </VStack>
@@ -36,7 +37,9 @@ export const Home = () => {
           {error}
         </Text>
       )}
+
       {posts &&
+        status !== 'pending' &&
         posts.map((postData) => {
           return <PostCard key={postData._id} postData={postData} />;
         })}
