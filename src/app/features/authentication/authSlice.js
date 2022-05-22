@@ -1,15 +1,10 @@
 import axios from 'axios';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-
-const saveUserDataInLocalStorage = (userData) => {
-  localStorage.setItem('sharemoment-userData', JSON.stringify(userData));
-};
-
-const getUserDataFromLocalStorage = () =>
-  JSON.parse(localStorage.getItem('sharemoment-userData'));
-
-const removeUserDataFromLocalStorage = () =>
-  localStorage.removeItem('sharemoment-userData');
+import {
+  saveUserDataInLocalStorage,
+  getUserDataFromLocalStorage,
+  removeUserDataFromLocalStorage,
+} from 'utilities';
 
 export const handleLogin = createAsyncThunk(
   'auth/handleLogin',
