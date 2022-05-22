@@ -85,13 +85,14 @@ export const likeDislikePost = createAsyncThunk(
         }
       );
       if (status === 201) {
-        return {
-          likesData: data.posts.find(({ _id }) => _id === postID).likes,
-          postID,
-        };
+        return { posts: data.posts };
       }
     } catch (error) {
-      return rejectWithValue({ errorMessage: `Failed to ${action}` });
+      return rejectWithValue({
+        message: `Failed to ${
+          action === 'dislike' ? 'unlike' : action
+        } the post`,
+      });
     }
   }
 );
@@ -221,17 +222,14 @@ const postsSlice = createSlice({
 
     // Like/Dislike Post Cases
     builder.addCase(likeDislikePost.pending, (state) => {
-      state.status = 'pending';
       state.error = null;
     });
     builder.addCase(likeDislikePost.fulfilled, (state, { payload }) => {
-      state.posts.find(({ _id }) => _id === payload.postID).likes =
-        payload.likesData;
+      state.posts = payload.posts;
       state.status = 'succeeded';
       state.error = null;
     });
-    builder.addCase(likeDislikePost.rejected, (state, { payload }) => {
-      state.error = payload.errorMessage;
+    builder.addCase(likeDislikePost.rejected, (state) => {
       state.status = 'failed';
     });
 

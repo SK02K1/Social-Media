@@ -23,10 +23,14 @@ import {
   removeFromBookmarks,
 } from 'app/features';
 import { UserAvatar } from 'components';
+import { useState } from 'react';
+import { useChakraToast } from 'hooks';
 
 export const PostCard = ({ postData }) => {
   const dispatch = useDispatch();
-  const { posts, status } = useSelector((store) => store.posts);
+  const chakraToast = useChakraToast();
+  const [isLikeActionPending, setIsLikeActionPending] = useState(false);
+  const { posts } = useSelector((store) => store.posts);
   const { user, token } = useSelector((store) => store.auth.userData);
   const { bookmarks, status: bookmarksStatus } = useSelector(
     (store) => store.bookmarks
@@ -56,9 +60,21 @@ export const PostCard = ({ postData }) => {
     ? `${user.firstName} ${user.lastName}`
     : `${firstName} ${lastName}`;
 
-  const likeDislikeHandler = () => {
-    const action = isPostLiked ? 'dislike' : 'like';
-    dispatch(likeDislikePost({ postID: _id, action, token }));
+  const likeDislikeHandler = async () => {
+    try {
+      setIsLikeActionPending(true);
+      const action = isPostLiked ? 'dislike' : 'like';
+      const { meta, payload } = await dispatch(
+        likeDislikePost({ postID: _id, action, token })
+      );
+      if (meta.requestStatus === 'rejected') {
+        chakraToast({ meta, payload });
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLikeActionPending(false);
+    }
   };
 
   const bookmarkHandler = () => {
@@ -128,7 +144,7 @@ export const PostCard = ({ postData }) => {
             as='button'
             onClick={likeDislikeHandler}
             alignItems='center'
-            disabled={status === 'pending'}
+            disabled={isLikeActionPending}
             _disabled={{ cursor: 'not-allowed' }}
           >
             {isPostLiked ? <BsHeartFill /> : <BsHeart />}
