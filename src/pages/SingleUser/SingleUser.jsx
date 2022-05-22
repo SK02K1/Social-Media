@@ -27,7 +27,9 @@ export const SingleUser = () => {
           {error}
         </Text>
       )}
-      {posts?.posts && <PostsListing posts={posts?.posts} />}
+      {posts?.posts && status !== 'pending' && (
+        <PostsListing posts={posts?.posts} />
+      )}
     </Box>
   );
 };

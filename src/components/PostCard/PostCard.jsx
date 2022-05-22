@@ -71,6 +71,7 @@ export const PostCard = ({ postData }) => {
 
   return (
     <HStack
+      w='full'
       spacing={4}
       mb={8}
       px={4}
