@@ -4,35 +4,43 @@ import {
   useColorModeValue,
   VStack,
   Button,
+  Spinner,
 } from '@chakra-ui/react';
 
-import { createNewPost } from 'app/features';
+import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useState } from 'react';
+import { createNewPost } from 'app/features';
 import { UserAvatar } from 'components';
+import { useChakraToast } from 'hooks';
 
 export const CreatePost = () => {
-  const [content, setContent] = useState('');
   const dispatch = useDispatch();
-
+  const chakraToast = useChakraToast();
+  const [content, setContent] = useState('');
+  const [isPosting, setIsPosting] = useState(false);
   const { token, user } = useSelector((store) => store.auth.userData);
-
-  const { status } = useSelector((store) => store.posts);
 
   const isEmpty = !Boolean(content.length);
 
   const inputChangeHandler = (e) => setContent(e.target.value);
 
-  const postBtnHandler = () => {
+  const postBtnHandler = async () => {
     const postData = { content };
-    dispatch(createNewPost({ token, postData }));
-  };
-
-  useEffect(() => {
-    if (status === 'succeeded') {
-      setContent('');
+    try {
+      setIsPosting(true);
+      const { meta, payload } = await dispatch(
+        createNewPost({ token, postData })
+      );
+      chakraToast({ meta, payload });
+      if (meta?.requestStatus === 'fulfilled') {
+        setContent('');
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsPosting(false);
     }
-  }, [status]);
+  };
 
   return (
     <HStack
@@ -68,9 +76,9 @@ export const CreatePost = () => {
             onClick={postBtnHandler}
             colorScheme='blue'
             size='sm'
-            disabled={isEmpty || status === 'pending'}
+            disabled={isEmpty || isPosting}
           >
-            Post
+            {isPosting ? <Spinner speed='0.2s' size='md' /> : 'Post'}
           </Button>
         </HStack>
       </VStack>

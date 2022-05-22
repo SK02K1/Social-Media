@@ -25,10 +25,11 @@ export const createNewPost = createAsyncThunk(
         { headers: { authorization: token } }
       );
       if (status === 201) {
-        return { post: data.posts[data.posts.length - 1] };
+        return { posts: data.posts, message: 'Posted successfully' };
       }
     } catch (error) {
-      return rejectWithValue({ errorMessage: 'Failed in posting your moment' });
+      console.error(error);
+      return rejectWithValue({ message: 'Failed in posting your moment' });
     }
   }
 );
@@ -177,16 +178,14 @@ const postsSlice = createSlice({
 
     // Create Post Cases
     builder.addCase(createNewPost.pending, (state) => {
-      state.status = 'pending';
       state.error = null;
     });
     builder.addCase(createNewPost.fulfilled, (state, { payload }) => {
-      state.posts.unshift(payload.post);
+      state.posts = payload.posts;
       state.status = 'succeeded';
       state.error = null;
     });
     builder.addCase(createNewPost.rejected, (state, { payload }) => {
-      state.error = payload.errorMessage;
       state.status = 'failed';
     });
 
