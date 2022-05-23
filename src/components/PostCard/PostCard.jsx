@@ -12,11 +12,7 @@ import {
 import { Link } from 'react-router-dom';
 import { PostCardControls } from './PostCardControls';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getPostByID,
-  isPostAlreadyBookmarked,
-  isPostAlreadyLiked,
-} from 'utilities';
+import { isPostAlreadyBookmarked, isPostAlreadyLiked } from 'utilities';
 import {
   likeDislikePost,
   addToBookmarks,
@@ -30,16 +26,13 @@ export const PostCard = ({ postData }) => {
   const dispatch = useDispatch();
   const chakraToast = useChakraToast();
   const [isLikeActionPending, setIsLikeActionPending] = useState(false);
-  const { posts } = useSelector((store) => store.posts);
   const { user, token } = useSelector((store) => store.auth.userData);
   const { bookmarks, status: bookmarksStatus } = useSelector(
     (store) => store.bookmarks
   );
   const { username: uid } = user;
-  const { _id } = postData;
-  const currentPost = getPostByID({ posts, postID: _id });
-
   const {
+    _id,
     firstName,
     lastName,
     username,
@@ -48,11 +41,10 @@ export const PostCard = ({ postData }) => {
     avatarURL,
     comments,
     likes,
-  } = currentPost;
+  } = postData;
 
   const { likeCount, likedBy } = likes;
   const commentCount = comments.length;
-
   const isMyPost = username === uid;
   const isPostLiked = isPostAlreadyLiked({ likedBy, uid });
   const isPostBookmarked = isPostAlreadyBookmarked({ bookmarks, postID: _id });
