@@ -131,11 +131,15 @@ export const deleteComment = createAsyncThunk(
         { headers: { authorization: token } }
       );
       if (status === 201) {
-        return { comments: data.comments, postID };
+        return {
+          comments: data.comments,
+          postID,
+          message: 'Comment deleted successfully',
+        };
       }
     } catch (error) {
       return rejectWithValue({
-        errorMessage: 'Failed in deleting the comment',
+        message: 'Failed in deleting your comment',
       });
     }
   }
@@ -253,17 +257,15 @@ const postsSlice = createSlice({
 
     // Delete Comment Cases
     builder.addCase(deleteComment.pending, (state) => {
-      state.status = 'pending';
       state.error = null;
     });
     builder.addCase(deleteComment.fulfilled, (state, { payload }) => {
       state.posts.find(({ _id }) => _id === payload.postID).comments =
-        payload.comments.reverse();
+        payload.comments;
       state.status = 'succeeded';
       state.error = null;
     });
     builder.addCase(deleteComment.rejected, (state, { payload }) => {
-      state.error = payload.errorMessage;
       state.status = 'failed';
     });
 
