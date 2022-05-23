@@ -1,4 +1,6 @@
-import { AddIcon } from '@chakra-ui/icons';
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 import {
   Button,
   FormControl,
@@ -9,13 +11,16 @@ import {
   Spinner,
   useColorModeValue,
 } from '@chakra-ui/react';
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+
+import { AddIcon } from '@chakra-ui/icons';
+
 import { addComment } from 'app/features';
 import { UserAvatar } from 'components';
+import { useChakraToast } from 'hooks';
 
 export const AddComment = ({ postID }) => {
   const dispatch = useDispatch();
+  const chakraToast = useChakraToast();
   const [comment, setComment] = useState('');
   const { user, token } = useSelector((store) => store.auth.userData);
   const [showLoader, setShowloader] = useState(false);
@@ -30,13 +35,13 @@ export const AddComment = ({ postID }) => {
     e.preventDefault();
     try {
       setShowloader(true);
-      const res = await dispatch(
+      const { meta, payload } = await dispatch(
         addComment({ postID, token, commentData: { text: comment } })
       );
-      const status = res.meta.requestStatus;
-      if (status === 'fulfilled') {
+      if (meta?.requestStatus === 'fulfilled') {
         setComment('');
       }
+      chakraToast({ meta, payload });
     } catch (error) {
       console.error(error);
     } finally {
@@ -58,7 +63,6 @@ export const AddComment = ({ postID }) => {
         size='md'
         userData={{ firstName, lastname, username, avatarURL }}
       />
-      {showLoader && <Spinner size='sm' speed='0.2s' my={4} />}
       <FormControl>
         <InputGroup>
           <Input
@@ -70,9 +74,13 @@ export const AddComment = ({ postID }) => {
             required
           />
           <InputRightElement h={'full'}>
-            <Button colorScheme='blue' type='submit' variant={'ghost'}>
-              <AddIcon />
-            </Button>
+            {showLoader ? (
+              <Spinner size='sm' speed='0.2s' />
+            ) : (
+              <Button colorScheme='blue' type='submit' variant={'ghost'}>
+                <AddIcon />
+              </Button>
+            )}
           </InputRightElement>
         </InputGroup>
       </FormControl>

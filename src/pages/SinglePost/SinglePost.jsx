@@ -30,7 +30,7 @@ export const SinglePost = () => {
 
   return (
     <Box pb={20}>
-      {showLoader && (
+      {showLoader && !postData && (
         <VStack w='full' my={8}>
           <Spinner speed='0.2s' size='sm' />
         </VStack>

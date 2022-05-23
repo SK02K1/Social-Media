@@ -109,10 +109,14 @@ export const addComment = createAsyncThunk(
         }
       );
       if (status === 201) {
-        return { comments: data.comments, postID };
+        return {
+          comments: data.comments,
+          postID,
+          message: 'Comment added successfully',
+        };
       }
     } catch (error) {
-      return rejectWithValue({ errorMessage: 'Failed in adding comment' });
+      return rejectWithValue({ message: 'Failed to add your comment' });
     }
   }
 );
@@ -235,17 +239,15 @@ const postsSlice = createSlice({
 
     // Add Comment Cases
     builder.addCase(addComment.pending, (state) => {
-      state.status = 'pending';
       state.error = null;
     });
     builder.addCase(addComment.fulfilled, (state, { payload }) => {
       state.posts.find(({ _id }) => _id === payload.postID).comments =
-        payload.comments.reverse();
+        payload.comments;
       state.status = 'succeeded';
       state.error = null;
     });
     builder.addCase(addComment.rejected, (state, { payload }) => {
-      state.error = payload.errorMessage;
       state.status = 'failed';
     });
 
