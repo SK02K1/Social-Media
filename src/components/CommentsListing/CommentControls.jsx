@@ -12,7 +12,7 @@ import { deleteComment } from 'app/features';
 import { CommentEditModal } from './CommentEditModal';
 import { useChakraToast } from 'hooks';
 
-export const CommentControls = ({ postID, commentID }) => {
+export const CommentControls = ({ postID, commentID, comment }) => {
   const dispatch = useDispatch();
   const chakraToast = useChakraToast();
   const { token } = useSelector((store) => store.auth.userData);
@@ -34,7 +34,11 @@ export const CommentControls = ({ postID, commentID }) => {
         <BsThreeDotsVertical />
       </MenuButton>
       <MenuList fontSize='sm' minW={150}>
-        <CommentEditModal postID={postID} commentID={commentID} />
+        <CommentEditModal
+          postID={postID}
+          commentID={commentID}
+          comment={comment}
+        />
         <MenuItem
           onClick={deleteCommentHandler}
           fontWeight='600'

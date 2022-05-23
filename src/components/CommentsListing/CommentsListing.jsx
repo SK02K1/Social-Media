@@ -1,15 +1,12 @@
 import { Box, HStack, Text, useColorModeValue, VStack } from '@chakra-ui/react';
 import { UserAvatar } from 'components';
 import { useSelector } from 'react-redux';
-import { getPostByID } from 'utilities';
 
 import { CommentControls } from './CommentControls';
 
 export const CommentsListing = ({ postData }) => {
-  const { _id: postID } = postData;
+  const { _id: postID, comments } = postData;
   const { username: uid } = useSelector((store) => store.auth.userData.user);
-  const { posts } = useSelector((store) => store.posts);
-  const { comments } = getPostByID({ posts, postID });
   const commentCardBg = useColorModeValue('white', 'gray.700');
 
   return (
@@ -66,6 +63,7 @@ export const CommentsListing = ({ postData }) => {
                         <CommentControls
                           postID={postID}
                           commentID={commentID}
+                          comment={text}
                         />
                       </Box>
                     )}

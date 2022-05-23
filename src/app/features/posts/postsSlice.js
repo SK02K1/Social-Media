@@ -155,10 +155,14 @@ export const editComment = createAsyncThunk(
         { headers: { authorization: token } }
       );
       if (status === 201) {
-        return { comments: data.comments, postID };
+        return {
+          comments: data.comments,
+          postID,
+          message: 'Comment successfully edited',
+        };
       }
     } catch (error) {
-      return rejectWithValue({ errorMessage: 'Failed in editing comment' });
+      return rejectWithValue({ message: 'Failed to edit your comment' });
     }
   }
 );
@@ -271,17 +275,15 @@ const postsSlice = createSlice({
 
     // Edit Comment Cases
     builder.addCase(editComment.pending, (state) => {
-      state.status = 'pending';
       state.error = null;
     });
     builder.addCase(editComment.fulfilled, (state, { payload }) => {
       state.posts.find(({ _id }) => _id === payload.postID).comments =
-        payload.comments.reverse();
+        payload.comments;
       state.status = 'succeeded';
       state.error = null;
     });
-    builder.addCase(editComment.rejected, (state, { payload }) => {
-      state.error = payload.errorMessage;
+    builder.addCase(editComment.rejected, (state) => {
       state.status = 'failed';
     });
   },
