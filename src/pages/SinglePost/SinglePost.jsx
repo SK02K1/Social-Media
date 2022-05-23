@@ -9,36 +9,38 @@ export const SinglePost = () => {
   const { postID } = useParams();
   const { posts } = useSelector((store) => store.posts);
   const [postData, setPostData] = useState(null);
-  const [status, setStatus] = useState('idle');
+  const [showLoader, setShowLoader] = useState(false);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     (async () => {
       try {
-        setStatus('pending');
+        setShowLoader(true);
         const { data, status } = await axios.get(`/api/posts/${postID}`);
         if (status === 200) {
           setPostData(data?.post);
-          setStatus('succeeded');
         }
       } catch (error) {
-        setStatus('rejected');
+        setError('Failed to fetch the request post');
+      } finally {
+        setShowLoader(false);
       }
     })();
   }, [posts, postID]);
 
   return (
     <Box pb={20}>
-      {status === 'rejected' && (
-        <Text textAlign='center' my={4} color='red.500' fontSize='xl'>
-          Failed to fetch the requested post
-        </Text>
-      )}
-      {postData && <PostCard postData={postData} />}
-      {status === 'pending' && (
+      {showLoader && (
         <VStack w='full' my={8}>
           <Spinner speed='0.2s' size='sm' />
         </VStack>
       )}
+      {error && (
+        <Text textAlign='center' my={4} color='red.500' fontSize='xl'>
+          {error}
+        </Text>
+      )}
+      {postData && <PostCard postData={postData} />}
       {postData && <AddComment postID={postID} />}
       {postData && <CommentsListing postData={postData} />}
     </Box>
