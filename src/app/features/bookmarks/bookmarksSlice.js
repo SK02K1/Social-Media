@@ -1,6 +1,13 @@
 import axios from 'axios';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { handleLogin } from '../authentication/authSlice';
+import {
+  addComment,
+  deleteComment,
+  editPost,
+  likeDislikePost,
+} from '../posts/postsSlice';
+import { getPostByID } from 'utilities';
 
 export const getAllBookmarks = createAsyncThunk(
   'bookmarks/getAllBookmarks',
@@ -83,6 +90,33 @@ const bookmarksSlice = createSlice({
       state.status = 'failed';
     });
 
+    // POST LIKE/DISLIKE CONSUME
+    builder.addCase(likeDislikePost.fulfilled, (state, { payload }) => {
+      const { posts, postID } = payload;
+      const changedPost = getPostByID({ posts, postID });
+      state.bookmarks[state.bookmarks.findIndex(({ _id }) => _id === postID)] =
+        changedPost;
+    });
+
+    // POST EDIT CONSUME
+    builder.addCase(editPost.fulfilled, (state, { payload }) => {
+      const { posts, postID } = payload;
+      const changedPost = getPostByID({ posts, postID });
+      state.bookmarks[state.bookmarks.findIndex(({ _id }) => _id === postID)] =
+        changedPost;
+    });
+
+    // POST COMMENT CONSUME
+    builder.addCase(addComment.fulfilled, (state, { payload }) => {
+      const { comments, postID } = payload;
+      state.bookmarks.find(({ _id }) => _id === postID).comments = comments;
+    });
+
+    builder.addCase(deleteComment.fulfilled, (state, { payload }) => {
+      const { comments, postID } = payload;
+      state.bookmarks.find(({ _id }) => _id === postID).comments = comments;
+    });
+
     // GET BOOKMARKS CASES
     builder.addCase(getAllBookmarks.pending, (state) => {
       state.status = 'pending';
@@ -102,7 +136,6 @@ const bookmarksSlice = createSlice({
 
     // ADD TO BOOKMARKS CASES
     builder.addCase(addToBookmarks.pending, (state) => {
-      state.status = 'pending';
       state.error = null;
     });
 
@@ -119,7 +152,6 @@ const bookmarksSlice = createSlice({
 
     // REMOVE FROM BOOKMARKS CASES
     builder.addCase(removeFromBookmarks.pending, (state) => {
-      state.status = 'pending';
       state.error = null;
     });
 

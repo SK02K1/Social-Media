@@ -63,6 +63,7 @@ export const editPost = createAsyncThunk(
       if (status === 201) {
         return {
           posts: data?.posts,
+          postID: postData._id,
           message: `Post edited successfully`,
         };
       }
@@ -85,7 +86,7 @@ export const likeDislikePost = createAsyncThunk(
         }
       );
       if (status === 201) {
-        return { posts: data.posts };
+        return { posts: data.posts, postID };
       }
     } catch (error) {
       return rejectWithValue({
