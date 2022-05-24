@@ -19,9 +19,7 @@ export const Home = () => {
   });
 
   useEffect(() => {
-    (async () => {
-      dispatch(getAllPosts());
-    })();
+    dispatch(getAllPosts());
   }, [dispatch]);
 
   useEffect(() => {
