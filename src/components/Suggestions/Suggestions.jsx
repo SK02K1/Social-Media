@@ -3,7 +3,6 @@ import {
   Box,
   Button,
   HStack,
-  Spinner,
   Text,
   useColorModeValue,
   VStack,
@@ -52,16 +51,10 @@ export const Suggestions = () => {
 
   return (
     <Box
-      minH='20rem'
       bg={useColorModeValue('white', 'gray.700')}
       borderRadius='lg'
       boxShadow='xl'
     >
-      {!users && (
-        <VStack mt={4}>
-          <Spinner size='sm' speed='0.2s' />
-        </VStack>
-      )}
       <VStack alignItems='flex-start' justifyContent='space-evenly' spacing={4}>
         {filteredUsers &&
           filteredUsers.map((userData) => {
