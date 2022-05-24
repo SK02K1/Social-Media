@@ -42,6 +42,13 @@ export const SingleUser = () => {
     })();
   }, [dispatch, username, posts, user]);
 
+  useEffect(() => {
+    return () => {
+      setUserData(null);
+      setUserPosts(null);
+    };
+  }, [username]);
+
   return (
     <Box>
       {userData && <ProfileCard userData={userData} />}
@@ -55,7 +62,7 @@ export const SingleUser = () => {
           {error}
         </Text>
       )}
-      {userPosts && <PostsListing posts={userPosts} />}
+      {userPosts && status !== 'pending' && <PostsListing posts={userPosts} />}
     </Box>
   );
 };
