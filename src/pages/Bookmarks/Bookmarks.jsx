@@ -2,8 +2,10 @@ import { useSelector } from 'react-redux';
 import { Box, Heading, Spinner, Text, VStack } from '@chakra-ui/react';
 
 import { PostCard } from 'components';
+import { useDocumentTitle } from 'hooks';
 
 export const Bookmarks = () => {
+  useDocumentTitle('Bookmarks');
   const { bookmarks, status, error } = useSelector((store) => store.bookmarks);
 
   return (

@@ -6,6 +6,7 @@ import { ProfileCard } from 'components';
 
 import { useEffect, useState } from 'react';
 import { getUser, getUserPosts } from 'app/features';
+import { useDocumentTitle } from 'hooks';
 
 export const SingleUser = () => {
   const { username } = useParams();
@@ -15,6 +16,7 @@ export const SingleUser = () => {
   const [userData, setUserData] = useState(null);
   const [userPosts, setUserPosts] = useState(null);
   const dispatch = useDispatch();
+  useDocumentTitle(username);
 
   useEffect(() => {
     (async () => {

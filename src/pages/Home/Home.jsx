@@ -4,8 +4,10 @@ import { Box, Spinner, VStack, Text } from '@chakra-ui/react';
 import { getAllPosts, getAllBookmarks } from 'app/features';
 import { CreatePost, PostCard, SortPosts } from 'components';
 import { filterByFollowingUser, sortPosts } from 'utilities';
+import { useDocumentTitle } from 'hooks';
 
 export const Home = () => {
+  useDocumentTitle('Home');
   const dispatch = useDispatch();
   const { user } = useSelector((store) => store.user);
   const { token } = useSelector((store) => store.auth.userData);

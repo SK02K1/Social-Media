@@ -4,8 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getAllPosts, getAllBookmarks } from 'app/features';
 import { PostCard, Suggestions } from 'components';
 import { filterByNotFollowingUser } from 'utilities';
+import { useDocumentTitle } from 'hooks';
 
 export const Explore = () => {
+  useDocumentTitle('Explore');
   const dispatch = useDispatch();
   const { user } = useSelector((store) => store.user);
   const { token } = useSelector((store) => store.auth.userData);

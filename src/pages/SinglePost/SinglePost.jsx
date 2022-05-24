@@ -4,8 +4,10 @@ import { useEffect, useState } from 'react';
 import { useParams } from 'react-router-dom';
 import { Box, VStack, Spinner, Text } from '@chakra-ui/react';
 import { PostCard, AddComment, CommentsListing } from 'components';
+import { useDocumentTitle } from 'hooks';
 
 export const SinglePost = () => {
+  const { setDocumentTitle } = useDocumentTitle('Posts');
   const { postID } = useParams();
   const { posts } = useSelector((store) => store.posts);
   const [postData, setPostData] = useState(null);
@@ -19,6 +21,7 @@ export const SinglePost = () => {
         const { data, status } = await axios.get(`/api/posts/${postID}`);
         if (status === 200) {
           setPostData(data?.post);
+          setDocumentTitle(data?.post?.content);
         }
       } catch (error) {
         setError('Failed to fetch the request post');
@@ -26,7 +29,7 @@ export const SinglePost = () => {
         setShowLoader(false);
       }
     })();
-  }, [posts, postID]);
+  }, [posts, postID, setDocumentTitle]);
 
   return (
     <Box pb={20}>
