@@ -8,3 +8,4 @@ export { getUserDataFromLocalStorage } from './localStorage/getUserDataFromLocal
 export { removeUserDataFromLocalStorage } from './localStorage/removeUserDataFromLocalStorage';
 export { isMyProfile } from './user/isMyProfile';
 export { filterByFollowingUser } from './post/filterByFollowingUser';
+export { filterUsersByNotFollowed } from './user/filterUsersByNotFollowed.js';
