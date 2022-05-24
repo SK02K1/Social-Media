@@ -2,21 +2,23 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Box, Spinner, VStack, Text } from '@chakra-ui/react';
 import { getAllPosts, getAllBookmarks } from 'app/features';
-import { CreatePost, PostCard } from 'components';
-import { filterByFollowingUser } from 'utilities';
+import { CreatePost, PostCard, SortPosts } from 'components';
+import { filterByFollowingUser, sortPosts } from 'utilities';
 
 export const Home = () => {
   const dispatch = useDispatch();
   const { user } = useSelector((store) => store.user);
   const { token } = useSelector((store) => store.auth.userData);
   const { bookmarks } = useSelector((store) => store.bookmarks);
-  const { posts, status, error } = useSelector((store) => store.posts);
+  const { posts, status, error, sortBy } = useSelector((store) => store.posts);
 
   const filteredPosts = filterByFollowingUser({
     posts,
     following: user?.following,
     uid: user?.username,
   });
+
+  const sortedPosts = sortPosts({ posts: filteredPosts, sortBy });
 
   useEffect(() => {
     dispatch(getAllPosts());
@@ -31,6 +33,7 @@ export const Home = () => {
   return (
     <Box>
       <CreatePost />
+      <SortPosts />
 
       {status === 'pending' && (
         <VStack w='full' my={8}>
@@ -46,7 +49,7 @@ export const Home = () => {
 
       {posts &&
         status !== 'pending' &&
-        filteredPosts.map((postData) => {
+        sortedPosts.map((postData) => {
           return <PostCard key={postData._id} postData={postData} />;
         })}
     </Box>

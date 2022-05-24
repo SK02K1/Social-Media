@@ -17,6 +17,7 @@ export {
   addComment,
   deleteComment,
   editComment,
+  setSortBy,
 } from './posts/postsSlice';
 
 export {

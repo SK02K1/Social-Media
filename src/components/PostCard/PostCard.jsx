@@ -1,4 +1,5 @@
 import { Box, HStack, VStack, Text, useColorModeValue } from '@chakra-ui/react';
+import { formatDistanceToNow } from 'date-fns';
 
 import { MdOutlineModeComment } from 'react-icons/md';
 import { BiShareAlt } from 'react-icons/bi';
@@ -42,6 +43,7 @@ export const PostCard = ({ postData }) => {
     avatarURL,
     comments,
     likes,
+    createdAt,
   } = postData;
 
   const { likeCount, likedBy } = likes;
@@ -131,6 +133,9 @@ export const PostCard = ({ postData }) => {
           whiteSpace='pre-wrap'
         >
           {content}
+        </Text>
+        <Text opacity={0.5} fontSize='sm' fontWeight={600}>
+          {formatDistanceToNow(new Date(createdAt), { addSuffix: true })}
         </Text>
         <HStack w='full' fontSize='lg' justifyContent='space-between'>
           <HStack

@@ -172,12 +172,17 @@ const initialState = {
   posts: null,
   status: 'idle',
   error: null,
+  sortBy: 'LATEST',
 };
 
 const postsSlice = createSlice({
   name: 'posts',
   initialState,
-  reducers: {},
+  reducers: {
+    setSortBy: (state, { payload }) => {
+      state.sortBy = payload.sortBy;
+    },
+  },
   extraReducers(builder) {
     // Get Posts Cases
     builder.addCase(getAllPosts.pending, (state) => {
@@ -291,3 +296,4 @@ const postsSlice = createSlice({
 });
 
 export const postsReducer = postsSlice.reducer;
+export const { setSortBy } = postsSlice.actions;

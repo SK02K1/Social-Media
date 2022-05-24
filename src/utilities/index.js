@@ -10,3 +10,4 @@ export { isMyProfile } from './user/isMyProfile';
 export { filterByFollowingUser } from './post/filterByFollowingUser';
 export { filterUsersByNotFollowed } from './user/filterUsersByNotFollowed.js';
 export { filterByNotFollowingUser } from './post/filterByNotFollowingUser';
+export { sortPosts } from './post/sortPosts.js';
