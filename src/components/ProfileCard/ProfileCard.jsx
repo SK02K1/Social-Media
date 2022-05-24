@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { LinkIcon } from '@chakra-ui/icons';
 import { isMyProfile } from 'utilities';
+import { FollowersModal } from './FollowersModal';
 
 import {
   HStack,
@@ -17,6 +18,7 @@ import { EditProfile } from './EditProfileModal';
 import { UserAvatar } from 'components';
 import { followUser, unfollowUser } from 'app/features';
 import { useChakraToast } from 'hooks';
+import { FollowingModal } from './FollowingModal';
 
 export const ProfileCard = ({ userData }) => {
   const chakraToast = useChakraToast();
@@ -104,11 +106,11 @@ export const ProfileCard = ({ userData }) => {
       <HStack>
         <HStack>
           <Text fontWeight={700}>{followers.length}</Text>
-          <Text>Followers</Text>
+          <FollowersModal followers={followers} />
         </HStack>
         <HStack>
           <Text fontWeight={700}>{following.length}</Text>
-          <Text>Following</Text>
+          <FollowingModal following={following} />
         </HStack>
       </HStack>
       {bio && <Text>{bio}</Text>}
