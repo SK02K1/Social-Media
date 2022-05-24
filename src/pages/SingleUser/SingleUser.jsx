@@ -1,18 +1,46 @@
-import { Box, Spinner, Text, VStack } from '@chakra-ui/react';
-
-import { ProfileCard } from 'components';
-import { useAxios } from 'hooks';
+import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { Box, Spinner, Text, VStack } from '@chakra-ui/react';
 import { PostsListing } from './PostsListing';
+import { ProfileCard } from 'components';
+
+import { useEffect, useState } from 'react';
+import { getUser, getUserPosts } from 'app/features';
 
 export const SingleUser = () => {
-  const { user } = useSelector((store) => store.auth.userData);
-  const { username: uid } = user;
   const { username } = useParams();
-  const { data, status, error } = useAxios(`/api/users/${username}`);
-  const userData = uid === username ? user : data?.user;
-  const { data: posts } = useAxios(`/api/posts/user/${username}`);
+  const { posts } = useSelector((store) => store.posts);
+  const { user } = useSelector((store) => store.user);
+  const { status, error } = useSelector((store) => store.user);
+  const [userData, setUserData] = useState(null);
+  const [userPosts, setUserPosts] = useState(null);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    (async () => {
+      try {
+        const { payload: userPayload, meta: userMeta } = await dispatch(
+          getUser({ username })
+        );
+        if (userMeta?.requestStatus === 'fulfilled') {
+          setUserData(userPayload?.user);
+        } else {
+          throw new Error(userPayload.errorMessage);
+        }
+        const { payload: PostsPayload, meta: PostsMeta } = await dispatch(
+          getUserPosts({ username })
+        );
+
+        if (PostsMeta?.requestStatus === 'fulfilled') {
+          setUserPosts(PostsPayload?.posts);
+        } else {
+          throw new Error(PostsPayload.errorMessage);
+        }
+      } catch (error) {
+        console.error(error);
+      }
+    })();
+  }, [dispatch, username, posts, user]);
 
   return (
     <Box>
@@ -27,9 +55,7 @@ export const SingleUser = () => {
           {error}
         </Text>
       )}
-      {posts?.posts && status !== 'pending' && (
-        <PostsListing posts={posts?.posts} />
-      )}
+      {userPosts && <PostsListing posts={userPosts} />}
     </Box>
   );
 };

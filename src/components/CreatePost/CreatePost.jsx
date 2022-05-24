@@ -18,7 +18,8 @@ export const CreatePost = () => {
   const chakraToast = useChakraToast();
   const [content, setContent] = useState('');
   const [isPosting, setIsPosting] = useState(false);
-  const { token, user } = useSelector((store) => store.auth.userData);
+  const { token } = useSelector((store) => store.auth.userData);
+  const { user } = useSelector((store) => store.user);
 
   const isEmpty = !Boolean(content.length);
 

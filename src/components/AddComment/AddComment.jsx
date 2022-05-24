@@ -22,7 +22,8 @@ export const AddComment = ({ postID }) => {
   const dispatch = useDispatch();
   const chakraToast = useChakraToast();
   const [comment, setComment] = useState('');
-  const { user, token } = useSelector((store) => store.auth.userData);
+  const { token } = useSelector((store) => store.auth.userData);
+  const { user } = useSelector((store) => store.user);
   const [showLoader, setShowloader] = useState(false);
 
   const { username, avatarURL, firstName, lastname } = user;

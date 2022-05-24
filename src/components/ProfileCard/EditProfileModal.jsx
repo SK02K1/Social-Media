@@ -24,11 +24,13 @@ import {
 } from '@chakra-ui/react';
 import { inputChangeHandler } from 'utilities';
 import { useDispatch, useSelector } from 'react-redux';
-import { editUserData } from 'app/features';
+import { editUser } from 'app/features';
+import { useChakraToast } from 'hooks';
 
 export const EditProfile = ({ userData }) => {
   const { token } = useSelector((store) => store.auth.userData);
   const dispatch = useDispatch();
+  const chakraToast = useChakraToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [formData, setFormData] = useState(userData);
   const { firstName, lastName, bio, siteLink, avatarURL } = formData;
@@ -60,7 +62,10 @@ export const EditProfile = ({ userData }) => {
     if (file) {
       setShowLoader(true);
       if (Math.floor(file / 1000000) > 3) {
-        console.log('Image file size should be less than 3MB', 'error');
+        chakraToast({
+          payload: { message: 'Image file size should be less than 3MB' },
+          meta: { requestStatus: 'rejected' },
+        });
         return;
       }
       const url = 'https://api.cloudinary.com/v1_1/dx0fxfuix/image/upload';
@@ -80,9 +85,16 @@ export const EditProfile = ({ userData }) => {
         })
         .then((data) => {
           return dispatch(
-            editUserData({
+            editUser({
               token,
-              userData: { ...formData, avatarURL: data.url },
+              userData: {
+                ...userData,
+                firstName,
+                lastName,
+                bio,
+                siteLink,
+                avatarURL: data.url,
+              },
             })
           );
         })
@@ -91,6 +103,11 @@ export const EditProfile = ({ userData }) => {
           onClose();
         })
         .catch((err) => console.log(err));
+    } else {
+      dispatch(editUser({ token, userData: { ...formData } }));
+      setFile(null);
+      setPreview(null);
+      onClose();
     }
   };
 

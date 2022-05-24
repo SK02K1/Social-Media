@@ -1,3 +1,8 @@
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { LinkIcon } from '@chakra-ui/icons';
+import { isMyProfile } from 'utilities';
+
 import {
   HStack,
   Text,
@@ -7,18 +12,18 @@ import {
   Button,
   Spinner,
 } from '@chakra-ui/react';
-import { useDispatch, useSelector } from 'react-redux';
-import { LinkIcon } from '@chakra-ui/icons';
-import { UserAvatar } from 'components';
+
+// import { followUser, unfollowUser } from 'app/features';
 import { EditProfile } from './EditProfileModal';
-import { followUser, unfollowUser } from 'app/features';
-import { useState } from 'react';
+import { UserAvatar } from 'components';
 
 export const ProfileCard = ({ userData }) => {
-  const { user, token } = useSelector((store) => store.auth.userData);
-  const { username: uid } = user;
+  // const { username: uid } = userData;
+
+  const { token } = useSelector((store) => store.auth.userData);
+  const { user } = useSelector((store) => store.user);
   const dispatch = useDispatch();
-  const [showLoader, setShowLoader] = useState(false);
+  // const [showLoader, setShowLoader] = useState(false);
   const {
     _id,
     firstName,
@@ -26,36 +31,38 @@ export const ProfileCard = ({ userData }) => {
     username,
     bio,
     siteLink,
-    followers,
-    following,
+    // followers,
+    // following,
   } = userData;
+
   const fullname = `${firstName} ${lastName}`;
+  const myProfile = isMyProfile({ user, userData });
 
-  const alreadyFollowed = Boolean(
-    user.following.find(({ _id: userID }) => userID === _id)
-  );
+  // const alreadyFollowed = Boolean(
+  //   user.following.find(({ _id: userID }) => userID === _id)
+  // );
 
-  const handleFollow = async () => {
-    setShowLoader(true);
-    try {
-      await dispatch(followUser({ token, userID: _id }));
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setShowLoader(false);
-    }
-  };
+  // const handleFollow = async () => {
+  //   setShowLoader(true);
+  //   try {
+  //     await dispatch(followUser({ token, userID: _id }));
+  //   } catch (error) {
+  //     console.error(error);
+  //   } finally {
+  //     setShowLoader(false);
+  //   }
+  // };
 
-  const handleUnfollow = async () => {
-    setShowLoader(true);
-    try {
-      await dispatch(unfollowUser({ token, userID: _id }));
-    } catch (error) {
-      console.error(error);
-    } finally {
-      setShowLoader(false);
-    }
-  };
+  // const handleUnfollow = async () => {
+  //   setShowLoader(true);
+  //   try {
+  //     await dispatch(unfollowUser({ token, userID: _id }));
+  //   } catch (error) {
+  //     console.error(error);
+  //   } finally {
+  //     setShowLoader(false);
+  //   }
+  // };
 
   return (
     <VStack
@@ -68,17 +75,23 @@ export const ProfileCard = ({ userData }) => {
     >
       <HStack w='full' justifyContent='space-between' alignItems='flex-start'>
         <UserAvatar userData={userData} size='xl' />
-        {!(username === uid) &&
+        {/* {!(username === uid) &&
           (alreadyFollowed ? (
-            <Button onClick={handleUnfollow} colorScheme='red'>
+            <Button
+              // onClick={handleUnfollow}
+              colorScheme='red'
+            >
               {showLoader ? <Spinner speed='0.2s' size='sm' /> : 'Unfollow'}
             </Button>
           ) : (
-            <Button onClick={handleFollow} colorScheme='blue'>
+            <Button
+              // onClick={handleFollow}
+              colorScheme='blue'
+            >
               {showLoader ? <Spinner speed='0.2s' size='sm' /> : 'Follow'}
             </Button>
-          ))}
-        {username === uid && <EditProfile userData={userData} />}
+          ))} */}
+        {myProfile && <EditProfile userData={userData} />}
       </HStack>
       <VStack spacing={-1} alignItems='flex-start'>
         <Text fontSize='lg' fontWeight='600'>
@@ -88,10 +101,10 @@ export const ProfileCard = ({ userData }) => {
           @{username}
         </Text>
       </VStack>
-      <HStack>
+      {/* <HStack>
         <Text>Followers({followers.length})</Text>
         <Text>Following({following.length})</Text>
-      </HStack>
+      </HStack> */}
       {bio && <Text>{bio}</Text>}
       {siteLink && (
         <HStack>

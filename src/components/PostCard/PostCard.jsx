@@ -24,9 +24,10 @@ import { useChakraToast } from 'hooks';
 
 export const PostCard = ({ postData }) => {
   const dispatch = useDispatch();
+  const { user } = useSelector((store) => store.user);
   const chakraToast = useChakraToast();
   const [isLikeActionPending, setIsLikeActionPending] = useState(false);
-  const { user, token } = useSelector((store) => store.auth.userData);
+  const { token } = useSelector((store) => store.auth.userData);
   const { bookmarks, status: bookmarksStatus } = useSelector(
     (store) => store.bookmarks
   );

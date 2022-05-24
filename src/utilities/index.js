@@ -6,3 +6,4 @@ export { getPostByID } from './post/getPostByID';
 export { saveUserDataInLocalStorage } from './localStorage/saveUserDataInLocalStorage';
 export { getUserDataFromLocalStorage } from './localStorage/getUserDataFromLocalStorage';
 export { removeUserDataFromLocalStorage } from './localStorage/removeUserDataFromLocalStorage';
+export { isMyProfile } from './user/isMyProfile';
