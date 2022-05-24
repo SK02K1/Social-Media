@@ -43,7 +43,6 @@ export const editUser = createAsyncThunk(
         { userData },
         { headers: { authorization: token } }
       );
-      console.log(data);
       if (status === 201) {
         saveUserDataInLocalStorage({ user: data.user, token });
         return { user: data.user, message: 'Profile updated successfully' };

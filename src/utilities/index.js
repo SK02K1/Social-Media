@@ -7,3 +7,4 @@ export { saveUserDataInLocalStorage } from './localStorage/saveUserDataInLocalSt
 export { getUserDataFromLocalStorage } from './localStorage/getUserDataFromLocalStorage';
 export { removeUserDataFromLocalStorage } from './localStorage/removeUserDataFromLocalStorage';
 export { isMyProfile } from './user/isMyProfile';
+export { filterByFollowingUser } from './post/filterByFollowingUser';

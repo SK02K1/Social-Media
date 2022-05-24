@@ -15,3 +15,4 @@ export { AddComment } from './AddComment/AddComment';
 export { CommentsListing } from './CommentsListing/CommentsListing';
 export { ProfileCard } from './ProfileCard/ProfileCard';
 export { UserAvatar } from './Avatar/UserAvatar';
+export { Suggestions } from './Suggestions/Suggestions';

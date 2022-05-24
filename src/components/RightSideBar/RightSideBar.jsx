@@ -1,5 +1,5 @@
-import { Box, Input, useColorModeValue, VStack } from '@chakra-ui/react';
-import { SidebarWrapper } from 'components';
+import { Input, VStack } from '@chakra-ui/react';
+import { SidebarWrapper, Suggestions } from 'components';
 
 const displayProp = {
   base: 'none',
@@ -23,12 +23,7 @@ export const RightSideBar = () => {
     >
       <VStack w='full' spacing={4} alignItems='left'>
         <Input placeholder='Search Posts, People, anything' />
-        <Box
-          minH='20rem'
-          bg={useColorModeValue('white', 'gray.700')}
-          borderRadius='lg'
-          boxShadow='xl'
-        ></Box>
+        <Suggestions />
       </VStack>
     </SidebarWrapper>
   );
