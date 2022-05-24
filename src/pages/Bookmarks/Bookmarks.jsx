@@ -2,8 +2,10 @@ import { useSelector } from 'react-redux';
 import { Box, Heading, Spinner, Text, VStack } from '@chakra-ui/react';
 
 import { PostCard } from 'components';
+import { useDocumentTitle } from 'hooks';
 
 export const Bookmarks = () => {
+  useDocumentTitle('Bookmarks');
   const { bookmarks, status, error } = useSelector((store) => store.bookmarks);
 
   return (
@@ -11,7 +13,8 @@ export const Bookmarks = () => {
       <Heading textAlign='center' fontSize='2xl' mb={8}>
         Bookmarks
       </Heading>
-      {status === 'pending' && !bookmarks && (
+
+      {status === 'pending' && (
         <VStack w='full' my={8}>
           <Spinner speed='0.2s' size='sm' />
         </VStack>
@@ -22,7 +25,9 @@ export const Bookmarks = () => {
           {error}
         </Text>
       )}
+
       {bookmarks &&
+        status !== 'pending' &&
         bookmarks.map((postData) => {
           return <PostCard key={postData._id} postData={postData} />;
         })}

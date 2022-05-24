@@ -10,13 +10,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import { BsThreeDotsVertical } from 'react-icons/bs';
 import { deleteComment } from 'app/features';
 import { CommentEditModal } from './CommentEditModal';
+import { useChakraToast } from 'hooks';
 
-export const CommentControls = ({ postID, commentID }) => {
+export const CommentControls = ({ postID, commentID, comment }) => {
   const dispatch = useDispatch();
+  const chakraToast = useChakraToast();
   const { token } = useSelector((store) => store.auth.userData);
 
-  const deletePostHandler = () => {
-    dispatch(deleteComment({ postID, commentID, token }));
+  const deleteCommentHandler = async () => {
+    try {
+      const { meta, payload } = await dispatch(
+        deleteComment({ postID, commentID, token })
+      );
+      chakraToast({ meta, payload });
+    } catch (error) {
+      console.error(error);
+    }
   };
 
   return (
@@ -25,9 +34,13 @@ export const CommentControls = ({ postID, commentID }) => {
         <BsThreeDotsVertical />
       </MenuButton>
       <MenuList fontSize='sm' minW={150}>
-        <CommentEditModal postID={postID} commentID={commentID} />
+        <CommentEditModal
+          postID={postID}
+          commentID={commentID}
+          comment={comment}
+        />
         <MenuItem
-          onClick={deletePostHandler}
+          onClick={deleteCommentHandler}
           fontWeight='600'
           color={useColorModeValue('red.600', 'red.400')}
         >

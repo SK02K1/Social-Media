@@ -1,16 +1,39 @@
+import axios from 'axios';
+import { useSelector } from 'react-redux';
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { Box, VStack, Spinner, Text } from '@chakra-ui/react';
 import { PostCard, AddComment, CommentsListing } from 'components';
-import { useAxios } from 'hooks';
-import { useParams } from 'react-router-dom';
+import { useDocumentTitle } from 'hooks';
 
 export const SinglePost = () => {
+  const { setDocumentTitle } = useDocumentTitle('Posts');
   const { postID } = useParams();
-  const { data, status, error } = useAxios(`/api/posts/${postID}`);
-  const postData = data?.post;
+  const { posts } = useSelector((store) => store.posts);
+  const [postData, setPostData] = useState(null);
+  const [showLoader, setShowLoader] = useState(false);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    (async () => {
+      try {
+        setShowLoader(true);
+        const { data, status } = await axios.get(`/api/posts/${postID}`);
+        if (status === 200) {
+          setPostData(data?.post);
+          setDocumentTitle(data?.post?.content);
+        }
+      } catch (error) {
+        setError('Failed to fetch the request post');
+      } finally {
+        setShowLoader(false);
+      }
+    })();
+  }, [posts, postID, setDocumentTitle]);
 
   return (
     <Box pb={20}>
-      {status === 'pending' && (
+      {showLoader && !postData && (
         <VStack w='full' my={8}>
           <Spinner speed='0.2s' size='sm' />
         </VStack>

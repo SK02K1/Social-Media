@@ -1,3 +1,9 @@
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { deletePost, removeFromBookmarks } from 'app/features';
+import { PostEditModal } from './PostEditModal';
+import { useChakraToast } from 'hooks';
+
 import {
   MenuButton,
   Menu,
@@ -8,23 +14,25 @@ import {
 
 import { BsThreeDotsVertical } from 'react-icons/bs';
 
-import { useDispatch, useSelector } from 'react-redux';
-import { deletePost, removeFromBookmarks } from 'app/features';
-import { PostEditModal } from './PostEditModal';
-import { useLocation, useNavigate } from 'react-router-dom';
-
-export const PostCardControls = ({ postID }) => {
-  const { pathname } = useLocation();
+export const PostCardControls = ({ postData }) => {
+  const { _id: postID } = postData;
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const chakraToast = useChakraToast();
+  const { pathname } = useLocation();
   const { token } = useSelector((store) => store.auth.userData);
 
-  const deletePostHandler = () => {
+  const deletePostHandler = async () => {
     if (pathname.split('/')[1] === 'posts') {
       navigate('/', { replace: true });
     }
-    dispatch(removeFromBookmarks({ postID, token }));
-    dispatch(deletePost({ postID, token }));
+    try {
+      dispatch(removeFromBookmarks({ postID, token }));
+      const { payload, meta } = await dispatch(deletePost({ postID, token }));
+      chakraToast({ meta, payload });
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
@@ -33,7 +41,7 @@ export const PostCardControls = ({ postID }) => {
         <BsThreeDotsVertical />
       </MenuButton>
       <MenuList fontSize='sm' minW={150}>
-        <PostEditModal postID={postID} />
+        <PostEditModal postData={postData} />
         <MenuItem
           onClick={deletePostHandler}
           fontWeight='600'

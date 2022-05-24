@@ -1,4 +1,5 @@
 import { Box, HStack, VStack, Text, useColorModeValue } from '@chakra-ui/react';
+import { formatDistanceToNow } from 'date-fns';
 
 import { MdOutlineModeComment } from 'react-icons/md';
 import { BiShareAlt } from 'react-icons/bi';
@@ -12,30 +13,28 @@ import {
 import { Link } from 'react-router-dom';
 import { PostCardControls } from './PostCardControls';
 import { useDispatch, useSelector } from 'react-redux';
-import {
-  getPostByID,
-  isPostAlreadyBookmarked,
-  isPostAlreadyLiked,
-} from 'utilities';
+import { isPostAlreadyBookmarked, isPostAlreadyLiked } from 'utilities';
 import {
   likeDislikePost,
   addToBookmarks,
   removeFromBookmarks,
 } from 'app/features';
 import { UserAvatar } from 'components';
+import { useState } from 'react';
+import { useChakraToast } from 'hooks';
 
 export const PostCard = ({ postData }) => {
   const dispatch = useDispatch();
-  const { posts, status } = useSelector((store) => store.posts);
-  const { user, token } = useSelector((store) => store.auth.userData);
+  const { user } = useSelector((store) => store.user);
+  const chakraToast = useChakraToast();
+  const [isLikeActionPending, setIsLikeActionPending] = useState(false);
+  const { token } = useSelector((store) => store.auth.userData);
   const { bookmarks, status: bookmarksStatus } = useSelector(
     (store) => store.bookmarks
   );
   const { username: uid } = user;
-  const { _id } = postData;
-  const currentPost = getPostByID({ posts, postID: _id });
-
   const {
+    _id,
     firstName,
     lastName,
     username,
@@ -44,11 +43,11 @@ export const PostCard = ({ postData }) => {
     avatarURL,
     comments,
     likes,
-  } = currentPost;
+    createdAt,
+  } = postData;
 
   const { likeCount, likedBy } = likes;
   const commentCount = comments.length;
-
   const isMyPost = username === uid;
   const isPostLiked = isPostAlreadyLiked({ likedBy, uid });
   const isPostBookmarked = isPostAlreadyBookmarked({ bookmarks, postID: _id });
@@ -56,9 +55,21 @@ export const PostCard = ({ postData }) => {
     ? `${user.firstName} ${user.lastName}`
     : `${firstName} ${lastName}`;
 
-  const likeDislikeHandler = () => {
-    const action = isPostLiked ? 'dislike' : 'like';
-    dispatch(likeDislikePost({ postID: _id, action, token }));
+  const likeDislikeHandler = async () => {
+    try {
+      setIsLikeActionPending(true);
+      const action = isPostLiked ? 'dislike' : 'like';
+      const { meta, payload } = await dispatch(
+        likeDislikePost({ postID: _id, action, token })
+      );
+      if (meta.requestStatus === 'rejected') {
+        chakraToast({ meta, payload });
+      }
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsLikeActionPending(false);
+    }
   };
 
   const bookmarkHandler = () => {
@@ -109,7 +120,7 @@ export const PostCard = ({ postData }) => {
           </HStack>
           {isMyPost && (
             <Box fontSize='lg'>
-              <PostCardControls postID={_id} />
+              <PostCardControls postData={postData} />
             </Box>
           )}
         </HStack>
@@ -123,12 +134,15 @@ export const PostCard = ({ postData }) => {
         >
           {content}
         </Text>
+        <Text opacity={0.5} fontSize='sm' fontWeight={600}>
+          {formatDistanceToNow(new Date(createdAt), { addSuffix: true })}
+        </Text>
         <HStack w='full' fontSize='lg' justifyContent='space-between'>
           <HStack
             as='button'
             onClick={likeDislikeHandler}
             alignItems='center'
-            disabled={status === 'pending'}
+            disabled={isLikeActionPending}
             _disabled={{ cursor: 'not-allowed' }}
           >
             {isPostLiked ? <BsHeartFill /> : <BsHeart />}

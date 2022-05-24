@@ -6,9 +6,6 @@ export {
   handleLogout,
   resetErrorMessage,
   selectUserData,
-  editUserData,
-  followUser,
-  unfollowUser,
 } from './authentication/authSlice';
 
 export {
@@ -20,6 +17,7 @@ export {
   addComment,
   deleteComment,
   editComment,
+  setSortBy,
 } from './posts/postsSlice';
 
 export {
@@ -27,3 +25,11 @@ export {
   addToBookmarks,
   removeFromBookmarks,
 } from './bookmarks/bookmarksSlice';
+
+export {
+  getUser,
+  getUserPosts,
+  editUser,
+  followUser,
+  unfollowUser,
+} from './user/userSlice';

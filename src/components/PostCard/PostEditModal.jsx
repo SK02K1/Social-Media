@@ -1,3 +1,6 @@
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+
 import {
   Button,
   MenuItem,
@@ -13,37 +16,38 @@ import {
   useDisclosure,
 } from '@chakra-ui/react';
 
-import { useEffect, useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
-
 import { editPost } from 'app/features';
+import { useChakraToast } from 'hooks';
 
-export const PostEditModal = ({ postID }) => {
-  const { token } = useSelector((store) => store.auth.userData);
-  const { posts, status } = useSelector((store) => store.posts);
-
-  const post = posts.find(({ _id }) => _id === postID);
-  const { content: oldContent } = post;
-
-  const [newContent, setNewContent] = useState(oldContent);
+export const PostEditModal = ({ postData }) => {
+  const [newContent, setNewContent] = useState(postData?.content);
+  const [isEditing, setIsEditing] = useState(false);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const { token } = useSelector((store) => store.auth.userData);
+  const chakraToast = useChakraToast();
   const dispatch = useDispatch();
 
   const inputChangeHandler = (e) => setNewContent(e.target.value);
 
-  const editBtnHandler = () => {
-    const postData = { ...post, content: newContent };
-    dispatch(editPost({ postData, token }));
+  const editBtnHandler = async () => {
+    try {
+      setIsEditing(true);
+      const { meta, payload } = await dispatch(
+        editPost({ postData: { ...postData, content: newContent }, token })
+      );
+      if (meta?.requestStatus === 'fulfilled') {
+        onClose();
+      }
+      chakraToast({ meta, payload });
+    } catch (error) {
+      console.error(error);
+    } finally {
+      setIsEditing(false);
+    }
   };
 
-  const isContentChanged = oldContent !== newContent && newContent;
+  const isContentChanged = postData?.content !== newContent && newContent;
   const hasContent = Boolean(newContent.length);
-
-  useEffect(() => {
-    if (status !== 'pending') {
-      onClose();
-    }
-  }, [status, onClose]);
 
   return (
     <>
@@ -77,15 +81,9 @@ export const PostEditModal = ({ postID }) => {
             <Button
               onClick={editBtnHandler}
               colorScheme='blue'
-              disabled={
-                !isContentChanged || status === 'pending' || !hasContent
-              }
+              disabled={!isContentChanged || isEditing || !hasContent}
             >
-              {status === 'pending' ? (
-                <Spinner size='sm' speed='0.2s' />
-              ) : (
-                'Save'
-              )}
+              {isEditing ? <Spinner size='sm' speed='0.2s' /> : 'Save'}
             </Button>
           </ModalFooter>
         </ModalContent>

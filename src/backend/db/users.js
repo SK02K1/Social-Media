@@ -40,8 +40,7 @@ export const users = [
     avatarURL:
       'https://pbs.twimg.com/profile_images/1085823173419880448/oDNqP1T3_400x400.jpg',
     bio: 'Curates JS interview qs on IG 👇👇',
-    siteLink:
-      'https://www.instagram.com/javascript_interviews/?igshid=5cpnfv22gmji',
+    siteLink: 'https://t.co/bKyqnQq3oo',
     createdAt: formatDate(),
     updatedAt: formatDate(),
   },

@@ -1,3 +1,9 @@
+import { useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { LinkIcon } from '@chakra-ui/icons';
+import { isMyProfile } from 'utilities';
+import { FollowersModal } from './FollowersModal';
+
 import {
   HStack,
   Text,
@@ -7,16 +13,17 @@ import {
   Button,
   Spinner,
 } from '@chakra-ui/react';
-import { useDispatch, useSelector } from 'react-redux';
-import { LinkIcon } from '@chakra-ui/icons';
-import { UserAvatar } from 'components';
+
 import { EditProfile } from './EditProfileModal';
+import { UserAvatar } from 'components';
 import { followUser, unfollowUser } from 'app/features';
-import { useState } from 'react';
+import { useChakraToast } from 'hooks';
+import { FollowingModal } from './FollowingModal';
 
 export const ProfileCard = ({ userData }) => {
-  const { user, token } = useSelector((store) => store.auth.userData);
-  const { username: uid } = user;
+  const chakraToast = useChakraToast();
+  const { user } = useSelector((store) => store.user);
+  const { token } = useSelector((store) => store.auth.userData);
   const dispatch = useDispatch();
   const [showLoader, setShowLoader] = useState(false);
   const {
@@ -29,7 +36,9 @@ export const ProfileCard = ({ userData }) => {
     followers,
     following,
   } = userData;
+
   const fullname = `${firstName} ${lastName}`;
+  const myProfile = isMyProfile({ user, userData });
 
   const alreadyFollowed = Boolean(
     user.following.find(({ _id: userID }) => userID === _id)
@@ -38,7 +47,10 @@ export const ProfileCard = ({ userData }) => {
   const handleFollow = async () => {
     setShowLoader(true);
     try {
-      await dispatch(followUser({ token, userID: _id }));
+      const { payload, meta } = await dispatch(
+        followUser({ token, userID: _id })
+      );
+      chakraToast({ meta, payload });
     } catch (error) {
       console.error(error);
     } finally {
@@ -49,7 +61,10 @@ export const ProfileCard = ({ userData }) => {
   const handleUnfollow = async () => {
     setShowLoader(true);
     try {
-      await dispatch(unfollowUser({ token, userID: _id }));
+      const { payload, meta } = await dispatch(
+        unfollowUser({ token, userID: _id })
+      );
+      chakraToast({ meta, payload });
     } catch (error) {
       console.error(error);
     } finally {
@@ -68,7 +83,7 @@ export const ProfileCard = ({ userData }) => {
     >
       <HStack w='full' justifyContent='space-between' alignItems='flex-start'>
         <UserAvatar userData={userData} size='xl' />
-        {!(username === uid) &&
+        {!(username === user.username) &&
           (alreadyFollowed ? (
             <Button onClick={handleUnfollow} colorScheme='red'>
               {showLoader ? <Spinner speed='0.2s' size='sm' /> : 'Unfollow'}
@@ -78,7 +93,7 @@ export const ProfileCard = ({ userData }) => {
               {showLoader ? <Spinner speed='0.2s' size='sm' /> : 'Follow'}
             </Button>
           ))}
-        {username === uid && <EditProfile userData={userData} />}
+        {myProfile && <EditProfile userData={userData} />}
       </HStack>
       <VStack spacing={-1} alignItems='flex-start'>
         <Text fontSize='lg' fontWeight='600'>
@@ -89,8 +104,14 @@ export const ProfileCard = ({ userData }) => {
         </Text>
       </VStack>
       <HStack>
-        <Text>Followers({followers.length})</Text>
-        <Text>Following({following.length})</Text>
+        <HStack>
+          <Text fontWeight={700}>{followers.length}</Text>
+          <FollowersModal followers={followers} />
+        </HStack>
+        <HStack>
+          <Text fontWeight={700}>{following.length}</Text>
+          <FollowingModal following={following} />
+        </HStack>
       </HStack>
       {bio && <Text>{bio}</Text>}
       {siteLink && (
