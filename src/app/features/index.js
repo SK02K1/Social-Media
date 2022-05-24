@@ -6,8 +6,6 @@ export {
   handleLogout,
   resetErrorMessage,
   selectUserData,
-  followUser,
-  unfollowUser,
 } from './authentication/authSlice';
 
 export {
@@ -27,4 +25,10 @@ export {
   removeFromBookmarks,
 } from './bookmarks/bookmarksSlice';
 
-export { getUser, getUserPosts, editUser } from './user/userSlice';
+export {
+  getUser,
+  getUserPosts,
+  editUser,
+  followUser,
+  unfollowUser,
+} from './user/userSlice';

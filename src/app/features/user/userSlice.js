@@ -53,6 +53,48 @@ export const editUser = createAsyncThunk(
     }
   }
 );
+export const followUser = createAsyncThunk(
+  'auth/followUser',
+  async ({ userID, token }, { rejectWithValue }) => {
+    try {
+      const { data, status } = await axios.post(
+        `/api/users/follow/${userID}`,
+        {},
+        {
+          headers: { authorization: token },
+        }
+      );
+      if (status === 200) {
+        saveUserDataInLocalStorage({ user: data.user, token });
+        return { user: data.user, message: 'Successfully Followed' };
+      }
+    } catch (error) {
+      console.error(error);
+      return rejectWithValue({ message: 'Failed to follow user' });
+    }
+  }
+);
+
+export const unfollowUser = createAsyncThunk(
+  'auth/unfollowUser',
+  async ({ userID, token }, { rejectWithValue }) => {
+    try {
+      const { data, status } = await axios.post(
+        `/api/users/unfollow/${userID}`,
+        {},
+        {
+          headers: { authorization: token },
+        }
+      );
+      if (status === 200) {
+        saveUserDataInLocalStorage({ user: data.user, token });
+        return { user: data.user, message: 'Unfollowed Successfully' };
+      }
+    } catch (error) {
+      return rejectWithValue({ message: 'Failed to unfollow user' });
+    }
+  }
+);
 
 const initialState = {
   user: getUserDataFromLocalStorage()?.user || {},
@@ -111,6 +153,36 @@ const userSlice = createSlice({
       state.status = 'succeeded';
     });
     builder.addCase(editUser.rejected, (state, { payload }) => {
+      state.status = 'failed';
+    });
+
+    // FOLLOW USER CASES
+    builder.addCase(followUser.pending, (state) => {
+      state.error = null;
+    });
+
+    builder.addCase(followUser.fulfilled, (state, { payload }) => {
+      state.status = 'succeed';
+      state.error = null;
+      state.user = payload.user;
+    });
+
+    builder.addCase(followUser.rejected, (state, { payload }) => {
+      state.status = 'failed';
+    });
+
+    // UNFOLLOW USER CASES
+    builder.addCase(unfollowUser.pending, (state) => {
+      state.error = null;
+    });
+
+    builder.addCase(unfollowUser.fulfilled, (state, { payload }) => {
+      state.status = 'succeed';
+      state.error = null;
+      state.user = payload.user;
+    });
+
+    builder.addCase(unfollowUser.rejected, (state, { payload }) => {
       state.status = 'failed';
     });
   },

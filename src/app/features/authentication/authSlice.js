@@ -62,48 +62,6 @@ export const handleSignup = createAsyncThunk(
   }
 );
 
-export const followUser = createAsyncThunk(
-  'auth/followUser',
-  async ({ userID, token }) => {
-    try {
-      const { data, status } = await axios.post(
-        `/api/users/follow/${userID}`,
-        {},
-        {
-          headers: { authorization: token },
-        }
-      );
-      if (status === 200) {
-        saveUserDataInLocalStorage({ user: data.user, token });
-        return { user: data.user };
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-);
-
-export const unfollowUser = createAsyncThunk(
-  'auth/unfollowUser',
-  async ({ userID, token }) => {
-    try {
-      const { data, status } = await axios.post(
-        `/api/users/unfollow/${userID}`,
-        {},
-        {
-          headers: { authorization: token },
-        }
-      );
-      if (status === 200) {
-        saveUserDataInLocalStorage({ user: data.user, token });
-        return { user: data.user };
-      }
-    } catch (error) {
-      console.log(error);
-    }
-  }
-);
-
 const initialState = {
   userData: getUserDataFromLocalStorage() ?? {},
   status: 'idle',
@@ -155,40 +113,6 @@ const authSlice = createSlice({
     builder.addCase(handleSignup.rejected, (state, { payload }) => {
       state.status = 'failed';
       state.error = payload;
-    });
-
-    // Follow User Cases
-    builder.addCase(followUser.pending, (state) => {
-      state.status = 'pending';
-      state.error = null;
-    });
-
-    builder.addCase(followUser.fulfilled, (state, { payload }) => {
-      state.status = 'succeed';
-      state.error = null;
-      state.userData.user = payload.user;
-    });
-
-    builder.addCase(followUser.rejected, (state, { payload }) => {
-      state.status = 'failed';
-      state.error = 'Failed to update your profile';
-    });
-
-    // Unfollow User Cases
-    builder.addCase(unfollowUser.pending, (state) => {
-      state.status = 'pending';
-      state.error = null;
-    });
-
-    builder.addCase(unfollowUser.fulfilled, (state, { payload }) => {
-      state.status = 'succeed';
-      state.error = null;
-      state.userData.user = payload.user;
-    });
-
-    builder.addCase(unfollowUser.rejected, (state, { payload }) => {
-      state.status = 'failed';
-      state.error = 'Failed to update your profile';
     });
   },
 });
