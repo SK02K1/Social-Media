@@ -116,7 +116,9 @@ const bookmarksSlice = createSlice({
 
     builder.addCase(deleteComment.fulfilled, (state, { payload }) => {
       const { comments, postID } = payload;
-      state.bookmarks.find(({ _id }) => _id === postID).comments = comments;
+      state.bookmarks = state.bookmarks.map((bookmark) =>
+        bookmark._id === postID ? { ...bookmark, comments } : bookmark
+      );
     });
 
     // GET BOOKMARKS CASES

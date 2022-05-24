@@ -4,6 +4,7 @@ import { useSelector } from 'react-redux';
 
 export const PostsListing = ({ posts }) => {
   const { user } = useSelector((store) => store.user);
+  const { avatarURL, firstName, lastName, bio, siteLink } = user;
   return (
     <VStack spacing={4} w='full' my={4}>
       {posts.map((postData) => {
@@ -12,7 +13,7 @@ export const PostsListing = ({ posts }) => {
             key={postData._id}
             postData={
               postData.username === user.username
-                ? { ...postData, ...user }
+                ? { ...postData, avatarURL, firstName, lastName, bio, siteLink }
                 : postData
             }
           />
