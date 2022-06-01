@@ -65,6 +65,9 @@ export const SingleUser = () => {
         </Text>
       )}
       {userPosts && status !== 'pending' && <PostsListing posts={userPosts} />}
+      {userPosts && status !== 'pending' && !Boolean(userPosts.length) && (
+        <Text textAlign='center'>No posts</Text>
+      )}
     </Box>
   );
 };
