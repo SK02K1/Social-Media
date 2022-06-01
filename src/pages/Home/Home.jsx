@@ -54,6 +54,12 @@ export const Home = () => {
         sortedPosts.map((postData) => {
           return <PostCard key={postData._id} postData={postData} />;
         })}
+
+      {posts && status !== 'pending' && !Boolean(filteredPosts.length) && (
+        <Text textAlign='center'>
+          No post found, follow other users to see posts
+        </Text>
+      )}
     </Box>
   );
 };
