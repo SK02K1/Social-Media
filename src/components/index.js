@@ -17,3 +17,4 @@ export { ProfileCard } from './ProfileCard/ProfileCard';
 export { UserAvatar } from './Avatar/UserAvatar';
 export { Suggestions } from './Suggestions/Suggestions';
 export { SortPosts } from './SortPosts/SortPosts';
+export { SearchBar } from './SearchBar/SearchBar';

@@ -2,7 +2,7 @@ import { Box, Heading, Spinner, VStack, Text } from '@chakra-ui/react';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { getAllPosts, getAllBookmarks } from 'app/features';
-import { PostCard, Suggestions } from 'components';
+import { PostCard, SearchBar, Suggestions } from 'components';
 import { filterByNotFollowingUser } from 'utilities';
 import { useDocumentTitle } from 'hooks';
 
@@ -47,9 +47,14 @@ export const Explore = () => {
         </Text>
       )}
 
-      <Box display={{ base: 'block', lg: 'none' }} mb={8}>
+      <VStack
+        alignItems='flex-start'
+        display={{ base: 'block', lg: 'none' }}
+        mb={8}
+      >
+        <SearchBar />
         {status !== 'pending' && <Suggestions />}
-      </Box>
+      </VStack>
 
       {posts && Boolean(filteredPosts?.length)
         ? status !== 'pending' &&

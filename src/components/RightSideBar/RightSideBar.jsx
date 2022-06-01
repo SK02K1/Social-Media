@@ -1,5 +1,5 @@
-import { Input, VStack } from '@chakra-ui/react';
-import { SidebarWrapper, Suggestions } from 'components';
+import { VStack } from '@chakra-ui/react';
+import { SidebarWrapper, Suggestions, SearchBar } from 'components';
 
 const displayProp = {
   base: 'none',
@@ -22,7 +22,7 @@ export const RightSideBar = () => {
       colEndProp={colEndProp}
     >
       <VStack w='full' spacing={4} alignItems='left'>
-        <Input placeholder='Search Posts, People, anything' />
+        <SearchBar />
         <Suggestions />
       </VStack>
     </SidebarWrapper>
