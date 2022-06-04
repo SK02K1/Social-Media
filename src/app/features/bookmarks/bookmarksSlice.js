@@ -1,6 +1,6 @@
 import axios from 'axios';
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { handleLogin } from '../authentication/authSlice';
+import { handleLogin, handleSignup } from '../authentication/authSlice';
 import {
   addComment,
   deleteComment,
@@ -86,6 +86,20 @@ const bookmarksSlice = createSlice({
     });
 
     builder.addCase(handleLogin.rejected, (state) => {
+      state.error = 'Failed in fetching bookmarked posts';
+      state.status = 'failed';
+    });
+    builder.addCase(handleSignup.pending, (state) => {
+      state.status = 'pending';
+      state.error = null;
+    });
+
+    builder.addCase(handleSignup.fulfilled, (state, { payload }) => {
+      state.status = 'succeeded';
+      state.bookmarks = payload?.user?.bookmarks || [];
+    });
+
+    builder.addCase(handleSignup.rejected, (state) => {
       state.error = 'Failed in fetching bookmarked posts';
       state.status = 'failed';
     });
