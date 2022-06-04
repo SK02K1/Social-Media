@@ -54,7 +54,8 @@ export const SearchBar = () => {
       <Input
         onChange={(e) => setSearchQuery(e.target.value)}
         value={searchQuery}
-        placeholder='Search Posts, People, anything'
+        placeholder='Search People'
+        _placeholder={{ color: 'blue.400' }}
       />
       {searchQuery && searchedUsers && (
         <VStack
