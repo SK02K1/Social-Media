@@ -2,7 +2,7 @@ import { Box, HStack, VStack, Text, useColorModeValue } from '@chakra-ui/react';
 import { formatDistanceToNow } from 'date-fns';
 
 import { MdOutlineModeComment } from 'react-icons/md';
-import { BiShareAlt } from 'react-icons/bi';
+
 import {
   BsHeart,
   BsBookmark,
@@ -152,7 +152,6 @@ export const PostCard = ({ postData }) => {
             <MdOutlineModeComment />
             <Text fontSize='sm'>{commentCount}</Text>
           </HStack>
-          <BiShareAlt />
           <HStack
             onClick={bookmarkHandler}
             as='button'
