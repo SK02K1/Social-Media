@@ -16,10 +16,11 @@ export const SingleUser = () => {
   const [userData, setUserData] = useState(null);
   const [userPosts, setUserPosts] = useState(null);
   const dispatch = useDispatch();
-  useDocumentTitle(username);
+  const { setDocumentTitle } = useDocumentTitle();
 
   useEffect(() => {
     (async () => {
+      setDocumentTitle(username);
       try {
         const { payload: userPayload, meta: userMeta } = await dispatch(
           getUser({ username })
@@ -42,7 +43,7 @@ export const SingleUser = () => {
         console.error(error);
       }
     })();
-  }, [dispatch, username, posts, user]);
+  }, [dispatch, username, posts, user, setDocumentTitle]);
 
   useEffect(() => {
     return () => {
@@ -65,6 +66,9 @@ export const SingleUser = () => {
         </Text>
       )}
       {userPosts && status !== 'pending' && <PostsListing posts={userPosts} />}
+      {userPosts && status !== 'pending' && !Boolean(userPosts.length) && (
+        <Text textAlign='center'>No posts</Text>
+      )}
     </Box>
   );
 };

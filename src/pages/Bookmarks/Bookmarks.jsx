@@ -31,6 +31,10 @@ export const Bookmarks = () => {
         bookmarks.map((postData) => {
           return <PostCard key={postData._id} postData={postData} />;
         })}
+
+      {bookmarks && !Boolean(bookmarks.length) && (
+        <Text textAlign='center'>haven't bookmarked any post</Text>
+      )}
     </Box>
   );
 };

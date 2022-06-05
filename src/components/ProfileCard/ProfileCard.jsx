@@ -78,6 +78,7 @@ export const ProfileCard = ({ userData }) => {
       alignItems='flex-start'
       bg={useColorModeValue('white', 'gray.700')}
       p={4}
+      mb={8}
       borderRadius='lg'
       boxShadow='xl'
     >

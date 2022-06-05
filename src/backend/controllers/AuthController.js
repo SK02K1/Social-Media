@@ -49,6 +49,8 @@ export const signupHandler = function (schema, request) {
       { _id, username },
       process.env.REACT_APP_JWT_SECRET
     );
+    createdUser.password = undefined;
+    createdUser.confirmPassword = undefined;
     return new Response(201, {}, { createdUser, encodedToken });
   } catch (error) {
     return new Response(
@@ -87,6 +89,7 @@ export const loginHandler = function (schema, request) {
         { _id: foundUser._id, username },
         process.env.REACT_APP_JWT_SECRET
       );
+      foundUser.password = undefined;
       return new Response(200, {}, { foundUser, encodedToken });
     }
     return new Response(
